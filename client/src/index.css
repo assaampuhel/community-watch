@@ -1,1 +1,30 @@
 @import "tailwindcss";
+
+@theme {
+  /* Colors from Sentinel Dark */
+  --color-background: #0d131f;
+  --color-surface: #1a202c;
+  --color-surface-dim: #0d131f;
+  --color-surface-border: #334155;
+  
+  --color-primary: #9fcaff;
+  --color-primary-inverse: #0061a5;
+  --color-primary-on: #003259;
+  
+  --color-text-main: #dde2f3;
+  --color-text-muted: #c0c7d3;
+  --color-text-label: #8b919c;
+
+  /* Typography */
+  --font-sans: 'Inter', sans-serif;
+  --font-mono: 'Space Grotesk', monospace;
+}
+
+body {
+  @apply bg-background text-text-main font-sans antialiased;
+}
+
+/* Base Aceternity/Glassmorphic Utilities */
+.glass-panel {
+  @apply bg-surface/80 backdrop-blur-md border border-surface-border shadow-2xl;
+}
