@@ -171,24 +171,17 @@ function HomePage() {
         <div className="cf-nav-buttons" style={{ display: "flex", alignItems: "center", gap: "28px" }}>
           <a className="cf-nav-links" href="#" style={{ color: "#8a9ab0", fontSize: "14px", textDecoration: "none" }}>Reports</a>
           <a className="cf-nav-links" href="#" style={{ color: "#8a9ab0", fontSize: "14px", textDecoration: "none" }}>Appeals</a>
-          <button style={{
-            padding: "6px 18px",
-            background: "white",
-            border: "1px solid #2e3d50",
-            borderRadius: "6px",
-            color: "black",
-            fontSize: "14px",
-            cursor: "pointer",
-          }}>Sign In</button>
-          <button style={{
-            padding: "6px 18px",
-            background: "#3d6080",
-            border: "1px solid #3d6080",
-            borderRadius: "6px",
-            color: "white",
-            fontSize: "14px",
-            cursor: "pointer",
-          }}>Sign Up</button>
+           <button style={{ background: "transparent", border: "none", color: "#c9d4e0", fontSize: "14px", cursor: "pointer" }}>Sign In</button>
+            <button style={{
+              padding: "8px 16px",
+              background: "#a5c9ff",
+              border: "none",
+              borderRadius: "4px",
+              color: "#000",
+              fontSize: "14px",
+              fontWeight: "bold",
+              cursor: "pointer",
+            }}>Sign Up</button>
         </div>
       </nav>
 

@@ -1,5 +1,5 @@
 import { useState } from "react";
-
+import { useVerifyHandle } from "./useVerifyHandle";
 const responsiveStyles = `
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html, body, #root { height: 100%; width: 100%; }
@@ -46,7 +46,13 @@ const ShieldIcon = () => (
   </svg>
 );
 
-function ActiveReports() {
+export default function ActiveReports() {
+  const {
+    handle,
+    setHandle,
+    userData,
+    verifyHandle,
+    } = useVerifyHandle();
   const [search, setSearch] = useState("");
 
   const pendingReviews = [
@@ -132,18 +138,23 @@ function ActiveReports() {
                 To access sensitive evidence, you must verify your Codeforces identity via the Blank Submission method. Submit a compilation error to problem 1A to confirm ownership of the linked 1500+ rated account.
               </p>
               <div style={{ display: "flex", gap: "12px", flexWrap: "wrap" }}>
-                <div style={{ 
-                  backgroundColor: "#151c27", 
-                  border: "1px solid #2e3d50", 
-                  padding: "8px 16px", 
+            
+                <input
+                  value={handle}
+                  onChange={(e) => setHandle(e.target.value)}
+                  placeholder="CodeForces username"
+                  style={{
+                  backgroundColor: "transparent",
+                  border: "1px solid #334155",
                   borderRadius: "4px",
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "12px"
-                }}>
-                  <span style={{ fontSize: "11px", color: "#55667a", textTransform: "uppercase", fontWeight: "bold" }}>Verification String:</span>
-                  <code style={{ color: "#fcd34d", fontWeight: "bold", fontFamily: "monospace" }}>CF_MOD_882A9</code>
-                </div>
+                  padding: "8px 12px",
+                  color: "#fff",
+                  fontSize: "14px",
+                  outline: "none", 
+                  width: "240px"
+                }}
+                />              
+                 
                 <button style={{
                   padding: "8px 20px",
                   background: "#1e293b",
@@ -221,4 +232,3 @@ function ActiveReports() {
   );
 }
 
-export default ActiveReports;

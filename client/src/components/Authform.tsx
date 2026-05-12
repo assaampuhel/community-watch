@@ -11,6 +11,7 @@ export default function AuthForm() {
   const [error, setError] = useState<string>("");
   const [isEligible, setIsEligible] = useState<boolean | null>(null);
   const [canModerate, setCanModerate] = useState<boolean>(false); 
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
     const verifyHandle = async () => {
       try {
         setError("");
