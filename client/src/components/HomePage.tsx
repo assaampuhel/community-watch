@@ -1,5 +1,5 @@
 import { useState } from "react";
-
+import { NavLink } from "react-router-dom";
 const responsiveStyles = `
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html, body, #root { height: 100%; width: 100%; }
@@ -257,27 +257,33 @@ function HomePage() {
 
           {/* Navigation Buttons */}
           <div className="cf-nav-btns-row" style={{ display: "flex", gap: "12px", flexWrap: "wrap", justifyContent: "center", marginBottom: "20px" }}>
-            {[
-              { icon: <DashboardIcon />, label: "Dashboard" },
-              { icon: <FlagIcon />, label: "Active Reports" },
-              { icon: <DBIcon />, label: "Cheater DB" },
-              { icon: <LeaderboardIcon />, label: "Leaderboard" },
-            ].map(({ icon, label }) => (
-              <button key={label} style={{
-                display: "flex", alignItems: "center", gap: "8px",
-                padding: "10px 20px",
-                background: "#141b26",
-                border: "1px solid #1e2a38",
-                borderRadius: "8px",
-                color: "#9dafc0",
-                fontSize: "14px",
-                fontWeight: 500,
-                cursor: "pointer",
-                whiteSpace: "nowrap",
-              }}>
+             {[
+              { icon: <FlagIcon />, label: "Active Reports", to: "/reports" },
+              { icon: <DBIcon />, label: "Cheater DB", to: "/cheaters" },
+            ].map(({ icon, label, to }) => (
+              <NavLink
+                key={label}
+                to={to}
+                style={({ isActive }) => ({
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "8px",
+                  padding: "10px 20px",
+                  background: isActive ? "#1f2a3a" : "#141b26",
+                  border: isActive ? "1px solid #3a4a60" : "1px solid #1e2a38",
+                  borderRadius: "8px",
+                  color: isActive ? "#ffffff" : "#9dafc0",
+                  fontSize: "14px",
+                  fontWeight: 500,
+                  cursor: "pointer",
+                  whiteSpace: "nowrap",
+                  textDecoration: "none",
+                  transition: "all 0.2s ease",
+                })}
+              >
                 {icon}
                 {label}
-              </button>
+              </NavLink>
             ))}
           </div>
 
@@ -295,19 +301,6 @@ function HomePage() {
               cursor: "pointer",
             }}>
               <PlusIcon /> New Report
-            </button>
-            <button style={{
-              display: "flex", alignItems: "center", gap: "7px",
-              padding: "10px 24px",
-              background: "#151b25",
-              border: "1px solid #1e2a38",
-              borderRadius: "8px",
-              color: "#8a9ab0",
-              fontSize: "14px",
-              fontWeight: 500,
-              cursor: "pointer",
-            }}>
-              <FlagIcon /> Appeal Decision
             </button>
           </div>
 
