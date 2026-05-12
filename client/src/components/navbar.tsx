@@ -1,25 +1,30 @@
 function Navbar() {
   return (
-    <nav className="flex items-center justify-between px-6 py-4 border-b border-[#334155] bg-[#0d131f] sticky top-0 z-50 font-sans text-white">
-      {/* Left: Logo & Title */}
-      <div className="flex items-center gap-3">
-        <div className="w-8 h-8 bg-[#1a202c] border border-[#334155] rounded flex items-center justify-center">
-            <span className="text-[#9fcaff] font-mono text-[10px]">CF</span>
+    <nav className="flex items-center justify-between px-8 h-16 border-b border-[#1e2530] bg-[#050a11] sticky top-0 z-50 font-sans">
+      <div className="flex items-center gap-10">
+        {/* Logo & Title */}
+        <div className="flex items-center gap-2.5">
+          <div className="w-[30px] h-[30px] rounded-md overflow-hidden">
+            <img src="/logo.png" alt="CF Community Watch" className="w-full h-full object-cover" />
+          </div>
+          <span className="text-[18px] font-bold text-[#a5c9ff]">CF Community Watch</span>
         </div>
-        <span className="font-bold text-lg tracking-wide">CF Community Watch</span>
+
+        {/* Navigation Links */}
+        <div className="hidden sm:flex gap-8 items-center">
+          <a href="#" className="text-[14px] text-[#8a9ab0] hover:text-white transition-colors no-underline">Reports</a>
+          <a href="#" className="text-[14px] text-[#8a9ab0] hover:text-white transition-colors no-underline">Leaderboard</a>
+          <a href="#" className="text-[14px] text-[#8a9ab0] hover:text-white transition-colors no-underline">Reviewers</a>
+          <a href="#" className="text-[14px] text-white no-underline border-b-2 border-[#a5c9ff] pb-[20px] translate-y-[11px]">Appeals</a>
+        </div>
       </div>
 
-      {/* Center: Navigation Links */}
-      <div className="flex gap-6 items-center">
-        <button className="text-sm text-gray-400 hover:text-white transition-colors">Reports</button>
-        <button className="text-sm text-gray-400 hover:text-white transition-colors">Cheater DB</button>
-        <button className="text-sm font-medium text-white border-b-2 border-[#9fcaff] pb-1">New Report</button>
-      </div>
-
-      {/* Right: Auth Buttons */}
-      <div className="flex gap-4 items-center">
-        <button className="text-sm text-gray-400 hover:text-white transition-colors">Sign In</button>
-        <button className="text-sm bg-[#e2e8f0] text-[#0d131f] px-4 py-1.5 rounded font-medium hover:bg-white transition-colors">
+      {/* Auth Buttons */}
+      <div className="flex items-center gap-5">
+        <button className="text-[14px] text-[#c9d4e0] hover:text-white transition-colors bg-transparent border-none cursor-pointer">
+          Sign In
+        </button>
+        <button className="text-[14px] font-bold text-black bg-[#a5c9ff] px-4 py-2 rounded hover:bg-[#8ab6f8] transition-colors cursor-pointer border-none">
           Sign Up
         </button>
       </div>
