@@ -6,9 +6,9 @@ import CheaterDB from "./components/CheaterDB";
 function App() {
   return (
     <div>
-      {/* <HomePage/> */}
+      <HomePage/>
       <AuthForm />
-      {/* <ActiveReports /> */}
+      <ActiveReports />
       <CheaterDB />
     </div>
   )

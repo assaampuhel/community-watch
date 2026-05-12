@@ -51,6 +51,8 @@ export default function ActiveReports() {
     handle,
     setHandle,
     userData,
+    error,
+    canModerate,
     verifyHandle,
     } = useVerifyHandle();
   const [search, setSearch] = useState("");
@@ -158,7 +160,9 @@ export default function ActiveReports() {
                 }}
                 />              
                  
-                <button style={{
+                <button 
+                onClick={verifyHandle}
+                style={{
                   padding: "8px 20px",
                   background: "#1e293b",
                   border: "1px solid #334155",
@@ -168,6 +172,17 @@ export default function ActiveReports() {
                   fontWeight: 600,
                   cursor: "pointer"
                 }}>Verify Now</button>
+                {userData && (
+                <p style={{ marginTop: "12px", color: "#8a9ab0" }}>
+                  Signed in as {userData.handle} ({userData.rating || "Unrated"})
+                </p>
+              )}
+
+              {error && (
+                <p style={{ marginTop: "12px", color: "#f87171" }}>
+                  {error}
+                </p>
+              )}
               </div>
             </div>
           </div>
@@ -199,9 +214,51 @@ export default function ActiveReports() {
                     <td style={{ padding: "16px 24px", color: "#8a9ab0", fontSize: "14px" }}>{row.contest}</td>
                     <td style={{ padding: "16px 24px", textAlign: "right" }}>
                       <div style={{ display: "flex", gap: "8px", justifyContent: "flex-end" }}>
-                        <button style={{ padding: "4px 12px", backgroundColor: "#1e293b", border: "none", borderRadius: "4px", color: "#fff", fontSize: "12px", cursor: "pointer" }}>View</button>
-                        <button style={{ padding: "4px 12px", backgroundColor: "#064e3b", border: "none", borderRadius: "4px", color: "#6ee7b7", fontSize: "12px", cursor: "pointer" }}>Agree</button>
-                        <button style={{ padding: "4px 12px", backgroundColor: "#7f1d1d", border: "none", borderRadius: "4px", color: "#fca5a5", fontSize: "12px", cursor: "pointer" }}>Reject</button>
+                        <button
+                          style={{
+                            padding: "4px 12px",
+                            backgroundColor: "#1e293b",
+                            border: "none",
+                            borderRadius: "4px",
+                            color: "#fff",
+                            fontSize: "12px",
+                            cursor: "pointer"
+                          }}
+                        >
+                          View
+                        </button>
+
+                        {canModerate && (
+                          <>
+                            <button
+                              style={{
+                                padding: "4px 12px",
+                                backgroundColor: "#064e3b",
+                                border: "none",
+                                borderRadius: "4px",
+                                color: "#6ee7b7",
+                                fontSize: "12px",
+                                cursor: "pointer"
+                              }}
+                            >
+                              Agree
+                            </button>
+
+                            <button
+                              style={{
+                                padding: "4px 12px",
+                                backgroundColor: "#7f1d1d",
+                                border: "none",
+                                borderRadius: "4px",
+                                color: "#fca5a5",
+                                fontSize: "12px",
+                                cursor: "pointer"
+                              }}
+                            >
+                              Reject
+                            </button>
+                          </>
+                        )}
                       </div>
                     </td>
                   </tr>
