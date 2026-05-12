@@ -158,14 +158,13 @@ function HomePage() {
         <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
           <div style={{
             width: "30px", height: "30px",
-            background: "linear-gradient(135deg, #1e2d40, #2a3d55)",
             borderRadius: "6px",
             display: "flex", alignItems: "center", justifyContent: "center",
-            border: "1px solid #2a3d55",
+            overflow: "hidden"
           }}>
-            <ShieldIcon />
+            <img src="/logo.png" alt="CF Community Watch" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
           </div>
-          <span style={{ fontSize: "17px", fontWeight: 600, color: "#d6e4f0" }}>CF Watch</span>
+          <span style={{ fontSize: "17px", fontWeight: 600, color: "#d6e4f0" }}>CF Community Watch</span>
         </div>
 
         <div className="cf-nav-buttons" style={{ display: "flex", alignItems: "center", gap: "28px" }}>
@@ -200,13 +199,12 @@ function HomePage() {
           {/* Shield Icon */}
           <div style={{
             width: "80px", height: "80px",
-            background: "linear-gradient(145deg, #1a2535, #243347)",
             borderRadius: "16px",
             display: "flex", alignItems: "center", justifyContent: "center",
             marginBottom: "32px",
-            border: "1px solid #2a3d55",
+            overflow: "hidden"
           }}>
-            <ShieldLarge />
+            <img src="/logo.png" alt="CF Community Watch" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
           </div>
 
           <h1 className="cf-h1" style={{
@@ -367,7 +365,9 @@ function HomePage() {
           marginRight: "auto",
         }}>
           <div style={{ marginBottom: "20px", display: "flex", justifyContent: "center" }}>
-            <ShieldCheck />
+            <div style={{ width: "50px", height: "50px", borderRadius: "10px", overflow: "hidden" }}>
+              <img src="/logo.png" alt="CF Community Watch" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+            </div>
           </div>
           <h2 style={{
             fontSize: "28px",
@@ -420,7 +420,7 @@ function HomePage() {
         gap: "16px",
       }}>
         <div>
-          <div style={{ fontSize: "15px", fontWeight: 600, color: "#c0d0e0", marginBottom: "4px" }}>CF Watch</div>
+          <div style={{ fontSize: "15px", fontWeight: 600, color: "#c0d0e0", marginBottom: "4px" }}>CF Community Watch</div>
           <div style={{ fontSize: "12px", color: "#3d4f62" }}>© 2024 CF Community Watch. Clinical & Objective Moderation.</div>
         </div>
         <div className="cf-footer-links" style={{ display: "flex", gap: "24px" }}>

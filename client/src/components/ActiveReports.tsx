@@ -89,7 +89,10 @@ export default function ActiveReports() {
         }}>
           <div style={{ display: "flex", alignItems: "center", gap: "40px" }}>
             <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-              <span style={{ fontSize: "18px", fontWeight: 700, color: "#a5c9ff" }}>CF Watch</span>
+              <div style={{ width: "30px", height: "30px", borderRadius: "6px", overflow: "hidden" }}>
+                <img src="/logo.png" alt="CF Community Watch" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+              </div>
+              <span style={{ fontSize: "18px", fontWeight: 700, color: "#a5c9ff" }}>CF Community Watch</span>
             </div>
             <div className="cf-nav-links" style={{ display: "flex", gap: "32px" }}>
               <a href="#" style={{ color: "#8a9ab0", fontSize: "14px", textDecoration: "none" }}>Reports</a>
