@@ -1,8 +1,47 @@
 import { useState } from 'react';
-
+type UserData = {
+  handle: string;
+  rating: number;
+  rank: string;
+};
 export default function AuthForm() {
   const [activeTab, setActiveTab] = useState('signin');
-
+  const [handle, setHandle] = useState<string>("");
+  const [userData, setUserData] = useState<UserData | null>(null);
+  const [error, setError] = useState<string>("");
+  const [isEligible, setIsEligible] = useState<boolean | null>(null);
+  const [canModerate, setCanModerate] = useState<boolean>(false); 
+    const verifyHandle = async () => {
+      try {
+        setError("");
+        setIsEligible(null)
+  
+        const response = await fetch(
+          `https://codeforces.com/api/user.info?handles=${handle}`
+        );
+  
+        const data = await response.json();
+        if (data.status !== "OK") {
+          setError("User not found");
+          setUserData(null);
+          setCanModerate(false);
+          return;
+        }
+        setUserData(data.result[0]);
+        if(data.result[0].rating < 1500 || data.result[0].rating === undefined) {
+         setIsEligible(false);
+         setCanModerate(false);
+        }
+        else {
+         setIsEligible(true);
+         setCanModerate(true);
+         console.log("User Tagged: MODERATOR_ELIBIGLE");
+        }
+      } catch (err) {
+        setError("Something went wrong");
+      }
+    };
+  
   return (
     <div className="bg-[#1a202c] border border-[#334155] w-full max-w-md rounded-lg p-8 shadow-2xl">
       
@@ -47,6 +86,8 @@ export default function AuthForm() {
               type="text" 
               placeholder="tourist"
               className="w-full bg-[#2f3542] border border-[#414751] text-white rounded px-3 py-2.5 text-sm outline-none focus:border-[#9fcaff] transition-colors"
+              value={handle} 
+              onChange={(e) => setHandle(e.target.value)} 
             />
           </div>
         )}
@@ -62,11 +103,24 @@ export default function AuthForm() {
           </p>
         </div>
       )}
-
+      {activeTab === 'signin' ? 
+      (
       <button className="w-full bg-[#0061a5] hover:bg-[#4894e2] text-white py-3 rounded mt-6 font-medium text-sm transition-colors flex justify-center items-center gap-2">
-        {activeTab === 'signin' ? 'Authenticate' : 'Register'}
+        'Authenticate'
       </button>
-
+      ) :
+      (
+      <button onClick={verifyHandle} className="w-full bg-[#0061a5] hover:bg-[#4894e2] text-white py-3 rounded mt-6 font-medium text-sm transition-colors flex justify-center items-center gap-2">
+        'Register'
+      </button>
+      )}
+      {isEligible === true && (
+        <p className="text-green-500 mt-2">Congratulations! You are eligible for moderation privileges.</p>
+      )}
+      {isEligible === false && (
+        <p className="text-orange-500 mt-2">You will not be able to moderate requests as your rating is below 1500.</p>
+      )}
+      {error && <p className="text-red-500 mt-2">{error}</p>}
     </div>
   );
 }

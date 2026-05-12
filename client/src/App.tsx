@@ -1,5 +1,6 @@
 import AuthForm from "./components/Authform";
-
+import VerifyHandle from "./components/VerifyHandle";
+import HomePage from "./components/HomePage";
 function App() {
   return (
     <div className="min-h-screen bg-[#0d131f] text-white flex flex-col items-center justify-center p-6">
@@ -10,11 +11,12 @@ function App() {
           Clinical & Objective Moderation
         </p>
       </div>
-
+      <HomePage/>
+      <VerifyHandle />
       <AuthForm />
 
     </div>
   )
 }
 
-export default App
+export default App;
