@@ -2,6 +2,10 @@ import AuthForm from "./components/Authform";
 import HomePage from "./components/HomePage";
 import ActiveReports from "./components/ActiveReports";
 import CheaterDB from "./components/CheaterDB";
+import Navbar from "./components/Navbar";
+import Report from "./components/Report";
+
+
 import {
   createBrowserRouter,
   RouterProvider,
@@ -23,6 +27,10 @@ const router = createBrowserRouter([
     path: "/cheaters",
     element: <CheaterDB />,
   },
+  {
+    path: "/report",
+    element: <Report />,
+  },
 ]);
 function App() {
   return (
@@ -31,5 +39,4 @@ function App() {
     </div>
   )
 }
-
 export default App;

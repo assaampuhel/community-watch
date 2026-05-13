@@ -1,11 +1,7 @@
 import { useState } from "react";
 import { useVerifyHandle } from "./VerifyHandle";
-import Navbar from "./navbar";
+import Navbar from "./Navbar";
 const responsiveStyles = `
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  html, body, #root { height: 100%; width: 100%; }
-  body { overflow-x: hidden; }
-
   @media (max-width: 640px) {
     .cf-nav-links { display: none !important; }
     .cf-nav-buttons { gap: 8px !important; }
@@ -104,25 +100,17 @@ export default function ActiveReports() {
               </p>
               <div style={{ display: "flex", gap: "12px", flexWrap: "wrap" }}>
             
-                <input
-                  value={handle}
-                  onChange={(e) => setHandle(e.target.value)}
-                  placeholder="CodeForces username"
-                  style={{
-                  backgroundColor: "transparent",
+                <button style={{
+                  padding: "8px 20px",
+                  background: "transparent",
                   border: "1px solid #334155",
                   borderRadius: "4px",
-                  padding: "8px 12px",
-                  color: "#fff",
-                  fontSize: "14px",
-                  outline: "none", 
-                  width: "240px"
-                }}
-                />              
-                 
-                <button 
-                onClick={verifyHandle}
-                style={{
+                  color: "#c9d4e0",
+                  fontSize: "13px",
+                  fontWeight: 600,
+                  cursor: "pointer"
+                }}>Sign In</button>
+                <button style={{
                   padding: "8px 20px",
                   background: "#1e293b",
                   border: "1px solid #334155",
@@ -131,18 +119,7 @@ export default function ActiveReports() {
                   fontSize: "13px",
                   fontWeight: 600,
                   cursor: "pointer"
-                }}>Verify Now</button>
-                {userData && (
-                <p style={{ marginTop: "12px", color: "#8a9ab0" }}>
-                  Signed in as {userData.handle} ({userData.rating || "Unrated"})
-                </p>
-              )}
-
-              {error && (
-                <p style={{ marginTop: "12px", color: "#f87171" }}>
-                  {error}
-                </p>
-              )}
+                }}>Sign Up</button>
               </div>
             </div>
           </div>

@@ -1,11 +1,7 @@
 import { useState } from "react";
-import Navbar from "./navbar";
+import Navbar from "./Navbar";
 
 const responsiveStyles = `
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  html, body, #root { height: 100%; width: 100%; }
-  body { overflow-x: hidden; }
-
   @media (max-width: 640px) {
     .cf-nav-links { display: none !important; }
     .cf-nav-buttons { gap: 8px !important; }

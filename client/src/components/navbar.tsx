@@ -17,6 +17,7 @@ function Navbar() {
         <div className="hidden sm:flex gap-8 items-center">
           <NavLink to="/reports" className="text-[14px] text-[#8a9ab0] hover:text-white transition-colors no-underline">Reports</NavLink>
           <NavLink to="/cheaters" className="text-[14px] text-white no-underline border-b-2 border-[#a5c9ff] pb-[20px] translate-y-[11px]">Cheater DB</NavLink>
+          <NavLink to="/report" className="text-[14px] text-[#8a9ab0] hover:text-white transition-colors no-underline">New Report</NavLink>
         </div>
       </div>
 
