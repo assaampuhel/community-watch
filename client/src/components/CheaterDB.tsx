@@ -1,5 +1,4 @@
 import { useState } from "react";
-import Navbar from "./navbar";
 
 const responsiveStyles = `
   @media (max-width: 640px) {
@@ -139,8 +138,6 @@ export default function CheaterDB() {
         display: "flex",
         flexDirection: "column",
       }}>
-
-       <Navbar />
 
         {/* ── Hero / Search ── */}
         <div className="cf-hero" style={{

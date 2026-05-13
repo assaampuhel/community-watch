@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
-import Navbar from "./navbar";
 
 const responsiveStyles = `
   @media (max-width: 640px) {
@@ -26,44 +25,7 @@ const responsiveStyles = `
 `;
 
 
-const ShieldIcon = () => (
-  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-    <circle cx="12" cy="12" r="3" />
-  </svg>
-);
 
-const ShieldCheck = () => (
-  <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#93b4d4" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-    <polyline points="9 12 11 14 15 10" />
-  </svg>
-);
-
-const ShieldLarge = () => (
-  <svg width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="#93b4d4" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-    <circle cx="12" cy="12" r="3" />
-  </svg>
-);
-
-const DashboardIcon = () => (
-  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
-    <rect x="3" y="3" width="7" height="7" rx="1" />
-    <rect x="14" y="3" width="7" height="7" rx="1" />
-    <rect x="3" y="14" width="7" height="7" rx="1" />
-    <rect x="14" y="14" width="7" height="7" rx="1" />
-  </svg>
-);
-
-const ReportsIcon = () => (
-  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
-    <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" />
-    <polyline points="14 2 14 8 20 8" />
-    <line x1="12" y1="18" x2="12" y2="12" />
-    <line x1="9" y1="15" x2="15" y2="15" />
-  </svg>
-);
 
 const FlagIcon = () => (
   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
@@ -80,13 +42,7 @@ const DBIcon = () => (
   </svg>
 );
 
-const LeaderboardIcon = () => (
-  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
-    <line x1="18" y1="20" x2="18" y2="10" />
-    <line x1="12" y1="20" x2="12" y2="4" />
-    <line x1="6" y1="20" x2="6" y2="14" />
-  </svg>
-);
+
 
 const PlusIcon = () => (
   <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -130,7 +86,6 @@ function HomePage() {
 
   return (
     <>
-    <Navbar />
     <style>{responsiveStyles}</style>
     <div style={{
       minHeight: "100vh",

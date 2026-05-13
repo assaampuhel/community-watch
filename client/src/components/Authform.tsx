@@ -1,17 +1,15 @@
 import { useState, useEffect} from 'react';
 import { useVerifyHandle } from './VerifyHandle';
-import { useSearchParams } from 'react-router';
+import { useSearchParams } from 'react-router-dom';
 export default function AuthForm() {
   const [searchParams] = useSearchParams();
   const [activeTab, setActiveTab] = useState('signin');
-  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+
   const {
     handle,
     setHandle,
-    userData,
     error,
     isEligible,
-    canModerate,
     verifyHandle
   } = useVerifyHandle();
 

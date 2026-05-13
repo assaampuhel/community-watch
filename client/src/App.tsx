@@ -5,38 +5,55 @@ import CheaterDB from "./components/CheaterDB";
 import Navbar from "./components/Navbar";
 import Report from "./components/Report";
 
-
 import {
   createBrowserRouter,
   RouterProvider,
+  Outlet,
 } from "react-router-dom";
+
+// Layout component to share the Navbar across all main pages
+function Layout() {
+  return (
+    <div>
+      <Navbar />
+      <Outlet />
+    </div>
+  );
+}
+
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <HomePage />,
+    element: <Layout />,
+    children: [
+      {
+        path: "/",
+        element: <HomePage />,
+      },
+      {
+        path: "/reports",
+        element: <ActiveReports />,
+      },
+      {
+        path: "/cheaters",
+        element: <CheaterDB />,
+      },
+      {
+        path: "/report",
+        element: <Report />,
+      },
+    ]
   },
   {
     path: "/auth",
     element: <AuthForm />,
   },
-  {
-    path: "/reports",
-    element: <ActiveReports />,
-  },
-  {
-    path: "/cheaters",
-    element: <CheaterDB />,
-  },
-  {
-    path: "/report",
-    element: <Report />,
-  },
 ]);
+
 function App() {
   return (
-    <div>
-      <RouterProvider router={router} />
-    </div>
+    <RouterProvider router={router} />
   )
 }
+
 export default App;
