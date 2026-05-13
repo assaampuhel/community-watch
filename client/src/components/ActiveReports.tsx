@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useVerifyHandle } from "./VerifyHandle";
 import Navbar from "./navbar";
+import { NavLink } from "react-router-dom";
 const responsiveStyles = `
   @media (max-width: 640px) {
     .cf-nav-links { display: none !important; }
@@ -99,7 +100,7 @@ export default function ActiveReports() {
                 To access sensitive evidence, you must verify your Codeforces identity via the Blank Submission method. Submit a compilation error to problem 1A to confirm ownership of the linked 1500+ rated account.
               </p>
               <div style={{ display: "flex", gap: "12px", flexWrap: "wrap" }}>
-            
+              <NavLink to="/auth?mode=signin">
                 <button style={{
                   padding: "8px 20px",
                   background: "transparent",
@@ -110,6 +111,8 @@ export default function ActiveReports() {
                   fontWeight: 600,
                   cursor: "pointer"
                 }}>Sign In</button>
+                </NavLink>
+                <NavLink to="/auth?mode=signup">
                 <button style={{
                   padding: "8px 20px",
                   background: "#1e293b",
@@ -120,6 +123,7 @@ export default function ActiveReports() {
                   fontWeight: 600,
                   cursor: "pointer"
                 }}>Sign Up</button>
+                </NavLink>
               </div>
             </div>
           </div>
