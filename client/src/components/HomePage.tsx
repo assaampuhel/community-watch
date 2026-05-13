@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import { useSearchParams } from 'react-router';
-import Navbar from "./Navbar";
+import Navbar from "./navbar";
 
 const responsiveStyles = `
   @media (max-width: 640px) {
@@ -196,8 +196,9 @@ function HomePage() {
               <SearchIcon />
             </span>
             <input
+              
               type="text"
-              placeholder="Search handles or contests..."
+              placeholder="Search handles"
               value={search}
               onChange={e => setSearch(e.target.value)}
               style={{
@@ -248,19 +249,21 @@ function HomePage() {
 
           {/* Action Buttons */}
           <div className="cf-action-row" style={{ display: "flex", gap: "12px", flexWrap: "wrap", justifyContent: "center", marginBottom: "64px" }}>
-            <button style={{
-              display: "flex", alignItems: "center", gap: "7px",
-              padding: "10px 24px",
-              background: "#1a3a5c",
-              border: "1px solid #2a5580",
-              borderRadius: "8px",
-              color: "#93b4d4",
-              fontSize: "14px",
-              fontWeight: 500,
-              cursor: "pointer",
-            }}>
-              <PlusIcon /> New Report
-            </button>
+            <NavLink to="/report">
+              <button style={{
+                display: "flex", alignItems: "center", gap: "7px",
+                padding: "10px 24px",
+                background: "#1a3a5c",
+                border: "1px solid #2a5580",
+                borderRadius: "8px",
+                color: "#93b4d4",
+                fontSize: "14px",
+                fontWeight: 500,
+                cursor: "pointer",
+              }}>
+                <PlusIcon /> New Report
+              </button>
+            </NavLink>
           </div>
 
           {/* Stats */}

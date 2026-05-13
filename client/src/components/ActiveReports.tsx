@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useVerifyHandle } from "./VerifyHandle";
-import Navbar from "./Navbar";
+import Navbar from "./navbar";
 const responsiveStyles = `
   @media (max-width: 640px) {
     .cf-nav-links { display: none !important; }

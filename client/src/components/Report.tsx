@@ -1,10 +1,13 @@
+import Navbar from "./navbar";
+
 export default function Report() {
 
   return (
+    
     <div className="bg-[#0d131f] text-white font-sans pb-12 min-h-[calc(100vh-73px)]">
+      <Navbar />
       {/* Main Content Container */}
       <main className="max-w-6xl mx-auto px-6 pt-10">
-        
         {/* Page Header */}
         <div className="mb-8">
           <h1 className="text-3xl font-bold mb-2">Report Misconduct</h1>
