@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { useVerifyHandle } from "./useVerifyHandle";
+import { useVerifyHandle } from "./VerifyHandle";
+import Navbar from "./navbar";
 const responsiveStyles = `
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html, body, #root { height: 100%; width: 100%; }
@@ -76,48 +77,7 @@ export default function ActiveReports() {
         display: "flex",
         flexDirection: "column",
       }}>
-        {/* Navbar */}
-        <nav style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          padding: "0 32px",
-          height: "64px",
-          borderBottom: "1px solid #1e2530",
-          backgroundColor: "#050a11",
-          position: "sticky",
-          top: 0,
-          zIndex: 100,
-        }}>
-          <div style={{ display: "flex", alignItems: "center", gap: "40px" }}>
-            <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-              <div style={{ width: "30px", height: "30px", borderRadius: "6px", overflow: "hidden" }}>
-                <img src="/logo.png" alt="CF Community Watch" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
-              </div>
-              <span style={{ fontSize: "18px", fontWeight: 700, color: "#a5c9ff" }}>CF Community Watch</span>
-            </div>
-            <div className="cf-nav-links" style={{ display: "flex", gap: "32px" }}>
-              <a href="#" style={{ color: "#8a9ab0", fontSize: "14px", textDecoration: "none" }}>Reports</a>
-              <a href="#" style={{ color: "#8a9ab0", fontSize: "14px", textDecoration: "none" }}>Leaderboard</a>
-              <a href="#" style={{ color: "#8a9ab0", fontSize: "14px", textDecoration: "none" }}>Reviewers</a>
-              <a href="#" style={{ color: "#fff", fontSize: "14px", textDecoration: "none", borderBottom: "2px solid #a5c9ff", paddingBottom: "20px" }}>Appeals</a>
-            </div>
-          </div>
-
-          <div className="cf-nav-buttons" style={{ display: "flex", alignItems: "center", gap: "20px" }}>
-            <button style={{ background: "transparent", border: "none", color: "#c9d4e0", fontSize: "14px", cursor: "pointer" }}>Sign In</button>
-            <button style={{
-              padding: "8px 16px",
-              background: "#a5c9ff",
-              border: "none",
-              borderRadius: "4px",
-              color: "#000",
-              fontSize: "14px",
-              fontWeight: "bold",
-              cursor: "pointer",
-            }}>Sign Up</button>
-          </div>
-        </nav>
+       <Navbar />
 
         {/* Main Content */}
         <main style={{ flex: 1, padding: "40px 24px", maxWidth: "1200px", margin: "0 auto", width: "100%" }}>

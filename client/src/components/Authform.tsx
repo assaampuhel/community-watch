@@ -1,7 +1,8 @@
-import { useState } from 'react';
-import { useVerifyHandle } from './useVerifyHandle';
-
+import { useState, useEffect} from 'react';
+import { useVerifyHandle } from './VerifyHandle';
+import { useSearchParams } from 'react-router';
 export default function AuthForm() {
+  const [searchParams] = useSearchParams();
   const [activeTab, setActiveTab] = useState('signin');
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const {
@@ -14,6 +15,12 @@ export default function AuthForm() {
     verifyHandle
   } = useVerifyHandle();
 
+  useEffect(() => {
+    const mode = searchParams.get('mode');
+    if (mode === 'signup' || mode === 'signin') {
+      setActiveTab(mode);
+    }
+  }, [searchParams]);
   
   return (
     <div className="min-h-screen bg-background text-text-main flex flex-col items-center justify-center p-6">

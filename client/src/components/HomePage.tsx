@@ -1,5 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
+import { useSearchParams } from 'react-router';
+import Navbar from "./navbar";
 const responsiveStyles = `
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html, body, #root { height: 100%; width: 100%; }
@@ -132,6 +134,7 @@ function HomePage() {
 
   return (
     <>
+    <Navbar />
     <style>{responsiveStyles}</style>
     <div style={{
       minHeight: "100vh",
@@ -142,48 +145,7 @@ function HomePage() {
       display: "flex",
       flexDirection: "column",
     }}>
-      {/* Navbar */}
-      <nav style={{
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "space-between",
-        padding: "0 32px",
-        height: "56px",
-        borderBottom: "1px solid #1e2530",
-        backgroundColor: "#0f1117",
-        position: "sticky",
-        top: 0,
-        zIndex: 100,
-      }}>
-        <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-          <div style={{
-            width: "30px", height: "30px",
-            borderRadius: "6px",
-            display: "flex", alignItems: "center", justifyContent: "center",
-            overflow: "hidden"
-          }}>
-            <img src="/logo.png" alt="CF Community Watch" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
-          </div>
-          <span style={{ fontSize: "17px", fontWeight: 600, color: "#d6e4f0" }}>CF Community Watch</span>
-        </div>
-
-        <div className="cf-nav-buttons" style={{ display: "flex", alignItems: "center", gap: "28px" }}>
-          <a className="cf-nav-links" href="#" style={{ color: "#8a9ab0", fontSize: "14px", textDecoration: "none" }}>Reports</a>
-          <a className="cf-nav-links" href="#" style={{ color: "#8a9ab0", fontSize: "14px", textDecoration: "none" }}>Appeals</a>
-           <button style={{ background: "transparent", border: "none", color: "#c9d4e0", fontSize: "14px", cursor: "pointer" }}>Sign In</button>
-            <button style={{
-              padding: "8px 16px",
-              background: "#a5c9ff",
-              border: "none",
-              borderRadius: "4px",
-              color: "#000",
-              fontSize: "14px",
-              fontWeight: "bold",
-              cursor: "pointer",
-            }}>Sign Up</button>
-        </div>
-      </nav>
-
+      
       {/* Hero */}
       <main style={{ flex: 1 }}>
         <section className="cf-hero" style={{
@@ -378,6 +340,7 @@ function HomePage() {
             We rely on experienced community members to maintain integrity. If you have a rating of 1500+ and want to help keep contests fair, apply to become a reviewer.
           </p>
           <div style={{ display: "flex", gap: "12px", justifyContent: "center" }}>
+            <NavLink to="/auth?mode=signin">
             <button style={{
               padding: "10px 28px",
               background: "#141b26",
@@ -388,6 +351,8 @@ function HomePage() {
               fontWeight: 500,
               cursor: "pointer",
             }}>Sign In</button>
+            </NavLink>
+            <NavLink to="/auth?mode=signup">
             <button style={{
               padding: "10px 28px",
               background: "#1a3a5c",
@@ -398,6 +363,7 @@ function HomePage() {
               fontWeight: 500,
               cursor: "pointer",
             }}>Apply Now</button>
+            </NavLink>
           </div>
         </section>
       </main>

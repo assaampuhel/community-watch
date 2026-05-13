@@ -1,4 +1,5 @@
 import { useState } from "react";
+import Navbar from "./navbar";
 
 const responsiveStyles = `
   * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -143,47 +144,7 @@ export default function CheaterDB() {
         flexDirection: "column",
       }}>
 
-        {/* ── Navbar ── */}
-        <nav style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          padding: "0 32px",
-          height: "64px",
-          borderBottom: "1px solid #1e2530",
-          backgroundColor: "#050a11",
-          position: "sticky",
-          top: 0,
-          zIndex: 100,
-        }}>
-          <div style={{ display: "flex", alignItems: "center", gap: "40px" }}>
-            <span style={{ fontSize: "18px", fontWeight: 700, color: "#a5c9ff" }}>CF Watch</span>
-            <div className="cf-nav-links" style={{ display: "flex", gap: "32px" }}>
-              <a href="#" style={{ color: "#8a9ab0", fontSize: "14px", textDecoration: "none" }}>Active Reports</a>
-              <a href="#" style={{
-                color: "#fff", fontSize: "14px", textDecoration: "none",
-                borderBottom: "2px solid #a5c9ff", paddingBottom: "20px"
-              }}>+ New Report</a>
-            </div>
-          </div>
-          <div className="cf-nav-buttons" style={{ display: "flex", alignItems: "center", gap: "20px" }}>
-            <button style={{ background: "transparent", border: "none", color: "#c9d4e0", fontSize: "14px", cursor: "pointer" }}>
-              Sign In
-            </button>
-            <button style={{
-              padding: "8px 16px",
-              background: "#a5c9ff",
-              border: "none",
-              borderRadius: "4px",
-              color: "#000",
-              fontSize: "14px",
-              fontWeight: "bold",
-              cursor: "pointer",
-            }}>
-              Sign Up
-            </button>
-          </div>
-        </nav>
+       <Navbar />
 
         {/* ── Hero / Search ── */}
         <div className="cf-hero" style={{
