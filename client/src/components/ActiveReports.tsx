@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import { getReports, createReview, type ReportData } from "../api";
 import { useAuth } from "../context/AuthContext";
+import Footer from "./Footer";
 
 const responsiveStyles = `
   @media (max-width: 640px) {
@@ -119,7 +120,7 @@ export default function ActiveReports() {
         flexDirection: "column",
       }}>
         {/* Main Content */}
-        <main style={{ flex: 1, padding: "40px 24px", maxWidth: "1200px", margin: "0 auto", width: "100%" }}>
+        <main style={{ padding: "40px 24px 0px 24px", maxWidth: "1200px", margin: "0 auto", width: "100%" }}>
           
           {/* Identity Verification Alert */}
           {!isLoggedIn && (
@@ -290,10 +291,6 @@ export default function ActiveReports() {
                       <div style={{ fontSize: "11px", color: "#55667a", textTransform: "uppercase", marginBottom: "4px" }}>Reason</div>
                       <div style={{ color: "#ffb86e" }}>{selectedReport.reason}</div>
                     </div>
-                    <div>
-                      <div style={{ fontSize: "11px", color: "#55667a", textTransform: "uppercase", marginBottom: "4px" }}>Reporter</div>
-                      <div style={{ color: "#8a9ab0" }}>{selectedReport.reporterHandle}</div>
-                    </div>
                   </div>
 
                   <div style={{ marginBottom: "24px" }}>
@@ -377,25 +374,7 @@ export default function ActiveReports() {
           )}
         </main>
 
-        {/* Footer */}
-        <footer className="cf-footer" style={{
-          borderTop: "1px solid #1e2530",
-          padding: "40px 32px",
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          marginTop: "auto"
-        }}>
-          <div>
-            <div style={{ fontSize: "16px", fontWeight: "bold", color: "#dce8f0", marginBottom: "4px" }}>CF Community Watch</div>
-            <div style={{ fontSize: "12px", color: "#55667a" }}>© 2024 CF Community Watch. Clinical & Objective Moderation.</div>
-          </div>
-          <div className="cf-footer-links" style={{ display: "flex", gap: "24px" }}>
-            {["Terms of Service", "Privacy Policy", "Contact Admin", "API Docs"].map(link => (
-              <a key={link} href="#" style={{ fontSize: "13px", color: "#55667a", textDecoration: "none" }}>{link}</a>
-            ))}
-          </div>
-        </footer>
+        <Footer />
       </div>
     </>
   );

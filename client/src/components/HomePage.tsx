@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
+import Footer from "./Footer";
 
 const responsiveStyles = `
   @media (max-width: 640px) {
@@ -330,26 +331,7 @@ function HomePage() {
         </section>
       </main>
 
-      {/* Footer */}
-      <footer className="cf-footer" style={{
-        borderTop: "1px solid #1b2333",
-        padding: "28px 40px",
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "center",
-        flexWrap: "wrap",
-        gap: "16px",
-      }}>
-        <div>
-          <div style={{ fontSize: "15px", fontWeight: 600, color: "#c0d0e0", marginBottom: "4px" }}>CF Community Watch</div>
-          <div style={{ fontSize: "12px", color: "#3d4f62" }}>© 2024 CF Community Watch. Clinical & Objective Moderation.</div>
-        </div>
-        <div className="cf-footer-links" style={{ display: "flex", gap: "24px" }}>
-          {["Terms of Service", "Privacy Policy", "Contact Admin", "API Docs"].map(link => (
-            <a key={link} href="#" style={{ fontSize: "13px", color: "#4d6070", textDecoration: "none" }}>{link}</a>
-          ))}
-        </div>
-      </footer>
+      <Footer />
     </div>
     </>
   );

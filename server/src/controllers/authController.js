@@ -4,26 +4,44 @@ import jwt from 'jsonwebtoken';
 
 export const signup = async (req, res) => {
   try {
-    const { handle, password, role = 'user' } = req.body;
+    const { handle, email, password } = req.body;
 
-    // Check if user already exists
-    const existingUser = await User.findOne({ handle });
+    // 1. Check if user already exists in OUR DB (handle or email)
+    const existingUser = await User.findOne({ $or: [{ handle }, { email }] });
     if (existingUser) {
-      return res.status(400).json({ error: 'User already exists' });
+      return res.status(400).json({ error: 'Handle or Email already registered' });
     }
 
-    // Hash password
+    // 2. Verify handle exists on Codeforces
+    const cfResponse = await fetch(`https://codeforces.com/api/user.info?handles=${handle}`);
+    const cfData = await cfResponse.json();
+
+    if (cfData.status !== 'OK') {
+      return res.status(400).json({ error: `Codeforces handle "${handle}" does not exist.` });
+    }
+
+    const cfUser = cfData.result[0];
+    const rating = cfUser.rating || 0;
+    const avatar = cfUser.titlePhoto;
+
+    // 3. Assign role based on rating (Moderator if rating > 1500)
+    const role = rating >= 1500 ? 'moderator' : 'user';
+
+    // 4. Hash password
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
-    // Create user
+    // 5. Create user
     const user = await User.create({
       handle,
+      email,
       password: hashedPassword,
-      role
+      role,
+      rating,
+      avatar
     });
 
-    // Generate JWT token
+    // 6. Generate JWT token
     const token = jwt.sign(
       { id: user._id },
       process.env.JWT_SECRET,
@@ -35,7 +53,9 @@ export const signup = async (req, res) => {
       user: {
         id: user._id,
         handle: user.handle,
+        email: user.email,
         role: user.role,
+        rating: user.rating,
         avatar: user.avatar
       }
     });

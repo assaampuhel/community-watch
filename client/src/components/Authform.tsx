@@ -10,6 +10,7 @@ export default function Authform() {
   
   const [activeTab, setActiveTab] = useState('signin');
   const [handle, setHandle] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -32,7 +33,7 @@ export default function Authform() {
       if (activeTab === 'signin') {
         response = await apiLogin(handle, password);
       } else {
-        response = await apiRegister(handle, password);
+        response = await apiRegister(handle, email, password);
       }
       
       login(response.token, response.user);
@@ -85,6 +86,20 @@ export default function Authform() {
               className="w-full bg-[#151b25] border border-[#1e2a38] text-white rounded px-3 py-2.5 text-sm outline-none focus:border-[#3b82f6] transition-colors"
             />
           </div>
+          
+          {activeTab === 'signup' && (
+            <div className="animate-in fade-in slide-in-from-top-1 duration-300">
+              <label className="block text-xs font-mono text-[#55667a] mb-1.5 uppercase tracking-wider">Email Address</label>
+              <input 
+                type="email" 
+                required
+                placeholder="e.g. mike@example.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="w-full bg-[#151b25] border border-[#1e2a38] text-white rounded px-3 py-2.5 text-sm outline-none focus:border-[#3b82f6] transition-colors"
+              />
+            </div>
+          )}
 
           <div>
             <label className="block text-xs font-mono text-[#55667a] mb-1.5 uppercase tracking-wider">Password</label>

@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { getReports, type ReportData } from "../api";
+import Footer from "./Footer";
 
 export default function CheaterDB() {
   const location = useLocation();
@@ -50,7 +51,7 @@ export default function CheaterDB() {
         </div>
       </div>
 
-      <main className="flex-1 p-8 max-w-6xl mx-auto w-full">
+      <main className="px-8 pt-8 pb-4 max-w-6xl mx-auto w-full">
         <div className="flex justify-between items-center mb-6">
           <h3 className="text-xs font-bold text-[#55667a] uppercase tracking-widest">
             Verified Records ({total})
@@ -160,6 +161,7 @@ export default function CheaterDB() {
           </div>
         )}
       </main>
+      <Footer />
     </div>
   );
 }

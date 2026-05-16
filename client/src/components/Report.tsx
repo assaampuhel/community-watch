@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { createReport } from "../api";
+import Footer from "./Footer";
 
 export default function Report() {
   const { user, isLoggedIn } = useAuth();
@@ -56,30 +57,33 @@ export default function Report() {
 
   if (success) {
     return (
-      <div className="min-h-[80vh] flex flex-col items-center justify-center bg-[#050a11] text-white">
-        <div className="w-20 h-20 bg-green-500/20 rounded-full flex items-center justify-center mb-6 border border-green-500/50">
-          <svg className="w-10 h-10 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
-          </svg>
+      <div className="flex flex-col min-h-[calc(100vh-64px)]">
+        <div className="flex-1 flex flex-col items-center justify-center bg-[#050a11] text-white">
+          <div className="w-20 h-20 bg-green-500/20 rounded-full flex items-center justify-center mb-6 border border-green-500/50">
+            <svg className="w-10 h-10 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+            </svg>
+          </div>
+          <h2 className="text-2xl font-bold mb-2">Report Submitted</h2>
+          <p className="text-gray-400 text-center max-w-md px-6">
+            Thank you for helping maintain community integrity. Your report has been logged and is awaiting peer review.
+          </p>
+          <button 
+            onClick={() => navigate("/")}
+            className="mt-8 px-6 py-2 bg-[#1e293b] border border-[#334155] rounded text-sm hover:bg-[#334155] transition-colors"
+          >
+            Return to Home
+          </button>
         </div>
-        <h2 className="text-2xl font-bold mb-2">Report Submitted</h2>
-        <p className="text-gray-400 text-center max-w-md px-6">
-          Thank you for helping maintain community integrity. Your report has been logged and is awaiting peer review.
-        </p>
-        <button 
-          onClick={() => navigate("/")}
-          className="mt-8 px-6 py-2 bg-[#1e293b] border border-[#334155] rounded text-sm hover:bg-[#334155] transition-colors"
-        >
-          Return to Home
-        </button>
+        <Footer />
       </div>
     );
   }
 
   return (
-    <div className="bg-[#050a11] text-white font-sans pb-12 min-h-[calc(100vh-64px)]">
+    <div className="bg-[#050a11] text-white font-sans flex flex-col min-h-[calc(100vh-64px)]">
       {/* Main Content Container */}
-      <main className="max-w-6xl mx-auto px-6 pt-10">
+      <main className="flex-1 max-w-6xl mx-auto px-6 pt-10 pb-12">
         
         {/* Page Header */}
         <div className="mb-8">
@@ -127,39 +131,23 @@ export default function Report() {
 
             <form onSubmit={handleSubmit} className="bg-[#1a202c] border border-[#334155] rounded-lg p-6 shadow-xl">
               
-              {/* Top Inputs: Reporter & Suspect */}
-              <div className="grid grid-cols-2 gap-6 mb-6">
-                
-                <div>
-                  <label className="block text-[11px] font-mono text-gray-400 mb-2 uppercase tracking-wider">
-                    Your Codeforces Handle
-                  </label>
-                  <div className="flex items-center bg-[#0d131f]/50 border border-[#334155] rounded px-3 py-2.5 text-gray-500">
-                    <svg className="w-4 h-4 text-gray-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                    </svg>
-                    <span className="text-sm font-mono">{isLoggedIn ? user?.handle : "Guest User"}</span>
-                  </div>
-                </div>
-
-                {/* Suspect Handle Input */}
-                <div>
-                  <label className="block text-[11px] font-mono text-gray-400 mb-2 uppercase tracking-wider">
-                    Suspect Codeforces Handle <span className="text-red-500">*</span>
-                  </label>
-                  <div className="flex items-center bg-[#0d131f] border border-[#334155] rounded px-3 py-2.5 focus-within:border-[#9fcaff] transition-colors">
-                    <svg className="w-4 h-4 text-gray-400 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                    </svg>
-                    <input 
-                      type="text" 
-                      required
-                      value={suspectHandle}
-                      onChange={(e) => setSuspectHandle(e.target.value)}
-                      placeholder="e.g. tourist" 
-                      className="bg-transparent text-white text-sm w-full outline-none placeholder-gray-600" 
-                    />
-                  </div>
+              {/* Suspect Handle Input */}
+              <div className="mb-6">
+                <label className="block text-[11px] font-mono text-gray-400 mb-2 uppercase tracking-wider">
+                  Suspect Codeforces Handle <span className="text-red-500">*</span>
+                </label>
+                <div className="flex items-center bg-[#0d131f] border border-[#334155] rounded px-3 py-2.5 focus-within:border-[#9fcaff] transition-colors">
+                  <svg className="w-4 h-4 text-gray-400 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                  </svg>
+                  <input 
+                    type="text" 
+                    required
+                    value={suspectHandle}
+                    onChange={(e) => setSuspectHandle(e.target.value)}
+                    placeholder="e.g. tourist" 
+                    className="bg-transparent text-white text-sm w-full outline-none placeholder-gray-600" 
+                  />
                 </div>
               </div>
 

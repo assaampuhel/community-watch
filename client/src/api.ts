@@ -49,10 +49,10 @@ export type AuthResponse = {
   user: { id: string; handle: string; role: string; avatar: string | null; rating?: number };
 };
 
-export async function apiRegister(handle: string, password: string): Promise<AuthResponse> {
+export async function apiRegister(handle: string, email: string, password: string): Promise<AuthResponse> {
   return apiFetch('/auth/signup', {
     method: 'POST',
-    body: { handle, password },
+    body: { handle, email, password },
   });
 }
 
