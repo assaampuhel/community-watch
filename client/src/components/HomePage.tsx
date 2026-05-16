@@ -63,7 +63,6 @@ function StatCard({ icon, target, suffix, label }: { icon: any, target: number, 
   const [count, setCount] = useState(0);
 
   useEffect(() => {
-    let start = 0;
     const duration = 1500; // 1.5 seconds
     const startTime = performance.now();
 
