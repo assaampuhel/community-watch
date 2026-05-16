@@ -28,3 +28,15 @@ body {
 .glass-panel {
   @apply bg-surface/80 backdrop-blur-md border border-surface-border shadow-2xl;
 }
+
+/* Hide browser native password reveal button to avoid duplicates with our custom one */
+input::-ms-reveal,
+input::-ms-clear,
+input::-webkit-contacts-auto-fill-button,
+input::-webkit-credentials-auto-fill-button {
+  display: none !important;
+}
+
+input[type="password"]::-webkit-reveal-button {
+  display: none !important;
+}

@@ -9,8 +9,8 @@ import { validateReportStatusUpdate } from '../middleware/validate.js';
 const router = express.Router();
 
 router.post('/', protect, uploadEvidence, validateReport, validateRequest, createReport);
-router.get('/', protect, getReports);
-router.get('/:reportId', protect, getReportById);
+router.get('/', getReports);
+router.get('/:reportId', getReportById);
 router.patch('/:reportId/status', protect, moderatorOnly, validateReportStatusUpdate, validateRequest, updateReportStatus);
 router.delete('/:reportId', protect, adminOnly, deleteReport);
 

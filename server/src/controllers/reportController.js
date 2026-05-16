@@ -32,7 +32,7 @@ export const createReport = async (req, res) => {
 
 export const getReports = async (req, res) => {
   try {
-    const { status, contestId, problemId, reporterHandle, suspectHandle } = req.query;
+    const { status, contestId, problemId, reporterHandle, suspectHandle, search } = req.query;
     const filter = {};
 
     if (status) filter.status = status;
@@ -40,9 +40,24 @@ export const getReports = async (req, res) => {
     if (problemId) filter.problemId = problemId;
     if (reporterHandle) filter.reporterHandle = reporterHandle;
     if (suspectHandle) filter.suspectHandle = suspectHandle;
+    
+    if (search) {
+      filter.$or = [
+        { suspectHandle: { $regex: search, $options: 'i' } },
+        { reason: { $regex: search, $options: 'i' } },
+        { description: { $regex: search, $options: 'i' } }
+      ];
+    }
 
     const reports = await Report.find(filter).sort({ createdAt: -1 });
-    res.json(reports);
+    const total = await Report.countDocuments(filter);
+
+    res.json({
+      reports,
+      total,
+      page: 1, // Simplified for now
+      pages: Math.ceil(total / 10)
+    });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
