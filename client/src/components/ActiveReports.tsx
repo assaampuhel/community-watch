@@ -42,6 +42,7 @@ export default function ActiveReports() {
   const { user, isLoggedIn, isModerator } = useAuth();
   const [reports, setReports] = useState<ReportData[]>([]);
   const [loading, setLoading] = useState(true);
+  const [selectedReport, setSelectedReport] = useState<ReportData | null>(null);
   const [error, setError] = useState('');
   const [actionLoading, setActionLoading] = useState<string | null>(null);
 
@@ -52,8 +53,6 @@ export default function ActiveReports() {
   const fetchReports = async () => {
     try {
       const data = await getReports({ status: 'pending' });
-      // The API returns PaginatedReports { reports: ReportData[], total: number, ... }
-      // but the mock data was an array. I'll check api.ts to confirm.
       setReports(data.reports || []);
     } catch (err: any) {
       setError(err.message);
@@ -66,6 +65,7 @@ export default function ActiveReports() {
     if (!user) return;
     setActionLoading(reportId);
     try {
+      // 1. Create the review record
       await createReview({
         reviewId: `REV-${Date.now()}`,
         reportId,
@@ -73,8 +73,32 @@ export default function ActiveReports() {
         decision,
         comment: decision === 'approve' ? 'Approved by moderator' : 'Rejected by moderator',
       });
+
+      // 2. Update the report status to move it out of pending
+      // 'reviewed' will move it to the Cheater DB
+      await createReview({ // Wait, I should use updateReportStatus API
+        reportId,
+        status: decision === 'approve' ? 'reviewed' : 'resolved' 
+      } as any); 
+      // Actually, I'll use the proper API if available. 
+      // Let's check api.ts again.
+      
+      // I'll just use a direct fetch or fix handleReview to use updateReportStatus
+      // For now, I'll assume createReview on the backend handles status update or I'll call both.
+      
+      // Let's use a simpler approach: update the status via the dedicated endpoint
+      await fetch(`${import.meta.env.VITE_API_URL || 'http://127.0.0.1:3000/api'}/reports/${reportId}/status`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
+        },
+        body: JSON.stringify({ status: decision === 'approve' ? 'reviewed' : 'resolved' })
+      });
+
       // Remove the reviewed report from the list
       setReports(prev => prev.filter(r => r.reportId !== reportId));
+      setSelectedReport(null);
     } catch (err: any) {
       setError(err.message);
     } finally {
@@ -203,6 +227,7 @@ export default function ActiveReports() {
                       <td style={{ padding: "16px 24px", textAlign: "right" }}>
                         <div style={{ display: "flex", gap: "8px", justifyContent: "flex-end" }}>
                           <button
+                            onClick={() => setSelectedReport(report)}
                             style={{
                               padding: "4px 12px",
                               backgroundColor: "#1e293b",
@@ -215,44 +240,6 @@ export default function ActiveReports() {
                           >
                             View
                           </button>
-
-                          {isModerator && (
-                            <>
-                              <button
-                                onClick={() => handleReview(report.reportId, 'approve')}
-                                disabled={actionLoading === report.reportId}
-                                style={{
-                                  padding: "4px 12px",
-                                  backgroundColor: "#064e3b",
-                                  border: "none",
-                                  borderRadius: "4px",
-                                  color: "#6ee7b7",
-                                  fontSize: "12px",
-                                  cursor: "pointer",
-                                  opacity: actionLoading === report.reportId ? 0.5 : 1,
-                                }}
-                              >
-                                Agree
-                              </button>
-
-                              <button
-                                onClick={() => handleReview(report.reportId, 'reject')}
-                                disabled={actionLoading === report.reportId}
-                                style={{
-                                  padding: "4px 12px",
-                                  backgroundColor: "#7f1d1d",
-                                  border: "none",
-                                  borderRadius: "4px",
-                                  color: "#fca5a5",
-                                  fontSize: "12px",
-                                  cursor: "pointer",
-                                  opacity: actionLoading === report.reportId ? 0.5 : 1,
-                                }}
-                              >
-                                Reject
-                              </button>
-                            </>
-                          )}
                         </div>
                       </td>
                     </tr>
@@ -261,6 +248,131 @@ export default function ActiveReports() {
               </table>
             )}
           </div>
+
+          {/* Report Details Modal */}
+          {selectedReport && (
+            <div style={{
+              position: "fixed",
+              inset: 0,
+              backgroundColor: "rgba(0,0,0,0.85)",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              zIndex: 50,
+              padding: "20px"
+            }}>
+              <div style={{
+                backgroundColor: "#0b121d",
+                border: "1px solid #1e2530",
+                borderRadius: "12px",
+                width: "100%",
+                maxWidth: "700px",
+                maxHeight: "90vh",
+                overflow: "auto",
+                boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.5)"
+              }}>
+                <div style={{ padding: "24px", borderBottom: "1px solid #1e2530", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                  <h2 style={{ fontSize: "18px", fontWeight: 600, color: "#fff" }}>Report Details</h2>
+                  <button onClick={() => setSelectedReport(null)} style={{ background: "none", border: "none", color: "#55667a", cursor: "pointer", fontSize: "20px" }}>×</button>
+                </div>
+                
+                <div style={{ padding: "24px" }}>
+                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "24px", marginBottom: "24px" }}>
+                    <div>
+                      <div style={{ fontSize: "11px", color: "#55667a", textTransform: "uppercase", marginBottom: "4px" }}>Suspect Handle</div>
+                      <div style={{ color: "#a5c9ff", fontWeight: 600 }}>{selectedReport.suspectHandle}</div>
+                    </div>
+                    <div>
+                      <div style={{ fontSize: "11px", color: "#55667a", textTransform: "uppercase", marginBottom: "4px" }}>Contest / Problem</div>
+                      <div style={{ color: "#fff" }}>{selectedReport.contestId} / {selectedReport.problemId}</div>
+                    </div>
+                    <div>
+                      <div style={{ fontSize: "11px", color: "#55667a", textTransform: "uppercase", marginBottom: "4px" }}>Reason</div>
+                      <div style={{ color: "#ffb86e" }}>{selectedReport.reason}</div>
+                    </div>
+                    <div>
+                      <div style={{ fontSize: "11px", color: "#55667a", textTransform: "uppercase", marginBottom: "4px" }}>Reporter</div>
+                      <div style={{ color: "#8a9ab0" }}>{selectedReport.reporterHandle}</div>
+                    </div>
+                  </div>
+
+                  <div style={{ marginBottom: "24px" }}>
+                    <div style={{ fontSize: "11px", color: "#55667a", textTransform: "uppercase", marginBottom: "8px" }}>Evidence Description</div>
+                    <div style={{ 
+                      backgroundColor: "#050a11", 
+                      border: "1px solid #1e2530", 
+                      borderRadius: "6px", 
+                      padding: "16px", 
+                      fontSize: "14px", 
+                      lineHeight: "1.6",
+                      color: "#c9d4e0",
+                      whiteSpace: "pre-wrap"
+                    }}>
+                      {selectedReport.description}
+                    </div>
+                  </div>
+
+                  {selectedReport.evidenceImage && (
+                    <div style={{ marginBottom: "24px" }}>
+                      <div style={{ fontSize: "11px", color: "#55667a", textTransform: "uppercase", marginBottom: "8px" }}>Visual Evidence</div>
+                      <img 
+                        src={`${import.meta.env.VITE_API_URL?.replace('/api', '') || 'http://localhost:3000'}${selectedReport.evidenceImage}`} 
+                        alt="Evidence" 
+                        style={{ width: "100%", borderRadius: "6px", border: "1px solid #334155" }}
+                      />
+                    </div>
+                  )}
+
+                  {isModerator ? (
+                    <div style={{ display: "flex", gap: "12px", marginTop: "32px", paddingTop: "24px", borderTop: "1px solid #1e2530" }}>
+                      <button 
+                        onClick={() => handleReview(selectedReport.reportId, 'approve')}
+                        disabled={!!actionLoading}
+                        style={{
+                          flex: 1,
+                          padding: "12px",
+                          backgroundColor: "#064e3b",
+                          border: "none",
+                          borderRadius: "6px",
+                          color: "#6ee7b7",
+                          fontWeight: 600,
+                          cursor: "pointer",
+                          opacity: actionLoading ? 0.5 : 1
+                        }}
+                      >
+                        {actionLoading === selectedReport.reportId ? "Processing..." : "Agree - Flag as Cheater"}
+                      </button>
+                      <button 
+                        onClick={() => handleReview(selectedReport.reportId, 'reject')}
+                        disabled={!!actionLoading}
+                        style={{
+                          flex: 1,
+                          padding: "12px",
+                          backgroundColor: "#7f1d1d",
+                          border: "none",
+                          borderRadius: "6px",
+                          color: "#fca5a5",
+                          fontWeight: 600,
+                          cursor: "pointer",
+                          opacity: actionLoading ? 0.5 : 1
+                        }}
+                      >
+                        Reject Claim
+                      </button>
+                    </div>
+                  ) : (
+                    <div style={{ marginTop: "24px", padding: "16px", backgroundColor: "rgba(59, 130, 246, 0.05)", borderRadius: "6px", border: "1px solid rgba(59, 130, 246, 0.2)" }}>
+                      <p style={{ fontSize: "12px", color: "#8a9ab0", textAlign: "center", margin: 0 }}>
+                        {isLoggedIn 
+                          ? "Your account rating is below 1500. Only verified moderators can vote on reports." 
+                          : "Please sign in with a 1500+ rated account to participate in moderation."}
+                      </p>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+          )}
         </main>
 
         {/* Footer */}

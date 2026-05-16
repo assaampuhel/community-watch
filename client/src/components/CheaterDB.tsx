@@ -6,6 +6,7 @@ export default function CheaterDB() {
   const [reports, setReports] = useState<ReportData[]>([]);
   const [loading, setLoading] = useState(true);
   const [total, setTotal] = useState(0);
+  const [selectedReport, setSelectedReport] = useState<ReportData | null>(null);
 
   useEffect(() => {
     async function fetchCheaters() {
@@ -83,7 +84,10 @@ export default function CheaterDB() {
                       </span>
                     </td>
                     <td className="px-6 py-4 text-right">
-                      <button className="text-[#55667a] hover:text-[#a5c9ff] transition-colors">
+                      <button 
+                        onClick={() => setSelectedReport(report)}
+                        className="text-[#55667a] hover:text-[#a5c9ff] transition-colors"
+                      >
                         <svg className="w-5 h-5 inline" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
@@ -96,6 +100,58 @@ export default function CheaterDB() {
             </tbody>
           </table>
         </div>
+
+        {/* Details Modal */}
+        {selectedReport && (
+          <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-6 backdrop-blur-sm">
+            <div className="bg-[#0b121d] border border-[#1e2530] rounded-xl w-full max-w-2xl overflow-hidden shadow-2xl">
+              <div className="px-6 py-4 border-b border-[#1e2530] flex justify-between items-center bg-[#0d131f]">
+                <h2 className="text-lg font-bold text-white">Record Verification</h2>
+                <button onClick={() => setSelectedReport(null)} className="text-[#55667a] hover:text-white text-xl">×</button>
+              </div>
+              <div className="p-8 max-h-[80vh] overflow-y-auto">
+                <div className="grid grid-cols-2 gap-8 mb-8">
+                  <div>
+                    <p className="text-[10px] uppercase tracking-widest text-[#55667a] font-bold mb-1">Suspect</p>
+                    <p className="text-[#a5c9ff] font-mono text-lg">{selectedReport.suspectHandle}</p>
+                  </div>
+                  <div>
+                    <p className="text-[10px] uppercase tracking-widest text-[#55667a] font-bold mb-1">Context</p>
+                    <p className="text-white">{selectedReport.contestId} / {selectedReport.problemId}</p>
+                  </div>
+                </div>
+                <div className="mb-8">
+                  <p className="text-[10px] uppercase tracking-widest text-[#55667a] font-bold mb-2">Evidence & Rationale</p>
+                  <div className="bg-[#050a11] border border-[#1e2530] p-4 rounded text-sm text-[#8a9ab0] leading-relaxed whitespace-pre-wrap font-sans">
+                    {selectedReport.description}
+                  </div>
+                </div>
+                {selectedReport.evidenceImage && (
+                  <div className="mb-8">
+                    <p className="text-[10px] uppercase tracking-widest text-[#55667a] font-bold mb-2">Attachment</p>
+                    <img 
+                      src={`${import.meta.env.VITE_API_URL?.replace('/api', '') || 'http://localhost:3000'}${selectedReport.evidenceImage}`} 
+                      alt="Evidence" 
+                      className="w-full rounded border border-[#334155] shadow-inner"
+                    />
+                  </div>
+                )}
+                <div className="mt-8 pt-6 border-t border-[#1e2530] flex justify-between items-center">
+                  <div>
+                    <p className="text-[10px] uppercase tracking-widest text-[#55667a] font-bold">Report ID</p>
+                    <p className="text-xs font-mono text-[#55667a]">{selectedReport.reportId}</p>
+                  </div>
+                  <button 
+                    onClick={() => setSelectedReport(null)}
+                    className="px-6 py-2 bg-[#1e293b] text-white text-sm rounded hover:bg-[#2d3a4f] transition-colors"
+                  >
+                    Close Record
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
       </main>
     </div>
   );
