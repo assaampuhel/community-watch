@@ -1,8 +1,13 @@
 import { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import { getReports, type ReportData } from "../api";
 
 export default function CheaterDB() {
-  const [search, setSearch] = useState("");
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const initialSearch = queryParams.get('search') || "";
+
+  const [search, setSearch] = useState(initialSearch);
   const [reports, setReports] = useState<ReportData[]>([]);
   const [loading, setLoading] = useState(true);
   const [total, setTotal] = useState(0);

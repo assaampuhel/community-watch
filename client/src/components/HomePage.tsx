@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 
 const responsiveStyles = `
   @media (max-width: 640px) {
@@ -83,6 +83,13 @@ const BanIcon = () => (
 
 function HomePage() {
   const [search, setSearch] = useState("");
+  const navigate = useNavigate();
+
+  const handleSearch = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter' && search.trim()) {
+      navigate(`/cheaters?search=${encodeURIComponent(search.trim())}`);
+    }
+  };
 
   return (
     <>
@@ -155,6 +162,7 @@ function HomePage() {
               placeholder="Search handles"
               value={search}
               onChange={e => setSearch(e.target.value)}
+              onKeyDown={handleSearch}
               style={{
                 width: "100%",
                 padding: "11px 16px 11px 40px",
