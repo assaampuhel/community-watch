@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import Footer from "./Footer";
 
@@ -58,6 +58,71 @@ const SearchIcon = () => (
     <line x1="21" y1="21" x2="16.65" y2="16.65" />
   </svg>
 );
+
+function StatCard({ icon, target, suffix, label }: { icon: any, target: number, suffix: string, label: string }) {
+  const [count, setCount] = useState(0);
+
+  useEffect(() => {
+    let start = 0;
+    const duration = 1500; // 1.5 seconds
+    const startTime = performance.now();
+
+    const updateCount = (currentTime: number) => {
+      const elapsed = currentTime - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      
+      const easeOutProgress = 1 - (1 - progress) * (1 - progress);
+      const currentCount = Math.floor(easeOutProgress * target);
+      setCount(currentCount);
+
+      if (progress < 1) {
+        requestAnimationFrame(updateCount);
+      }
+    };
+
+    requestAnimationFrame(updateCount);
+  }, [target]);
+
+  return (
+    <div style={{
+      display: "flex",
+      alignItems: "center",
+      gap: "16px",
+      padding: "24px 20px",
+      background: "#0b121d",
+      border: "1px solid #1e2530",
+      borderRadius: "12px",
+      boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1)",
+      minHeight: "100px",
+      boxSizing: "border-box",
+      height: "100%"
+    }}>
+      <div style={{
+        width: "48px", height: "48px",
+        background: "rgba(165, 201, 255, 0.05)",
+        borderRadius: "12px",
+        display: "flex", alignItems: "center", justifyContent: "center",
+        flexShrink: 0,
+        border: "1px solid rgba(165, 201, 255, 0.1)",
+        color: "#a5c9ff"
+      }}>
+        {icon}
+      </div>
+      <div style={{ 
+        display: "flex", 
+        flexDirection: "column", 
+        justifyContent: "center",
+        flex: 1,
+        minWidth: 0
+      }}>
+        <div style={{ fontSize: "24px", fontWeight: 800, color: "#fff", lineHeight: "1.1", letterSpacing: "-0.01em" }}>
+          {count.toLocaleString()}{suffix}
+        </div>
+        <div style={{ fontSize: "13px", color: "#6b7a8d", marginTop: "6px", fontWeight: 500, lineHeight: "1.3" }}>{label}</div>
+      </div>
+    </div>
+  );
+}
 
 const UserIcon = () => (
   <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#93b4d4" strokeWidth="1.8">
@@ -134,7 +199,7 @@ function HomePage() {
             color: "#dce8f0",
             margin: "0 0 14px",
             letterSpacing: "-0.5px",
-          }}>Clinical & Objective Moderation</h1>
+          }}>CF Community Watch</h1>
 
           <p style={{
             fontSize: "15px",
@@ -232,40 +297,20 @@ function HomePage() {
           {/* Stats */}
           <div className="cf-stats-grid" style={{
             display: "grid",
-            gridTemplateColumns: "repeat(3, 1fr)",
-            gap: "12px",
+            gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
+            gap: "16px",
             width: "100%",
-            maxWidth: "900px",
+            maxWidth: "1000px",
+            margin: "0 auto",
+            padding: "0 20px",
+            boxSizing: "border-box"
           }}>
             {[
-              { icon: <BanIcon />, value: "1,000+", label: "Verified Cheaters Tagged" },
-              { icon: <FileIcon />, value: "5,000+", label: "Reports Processed" },
-              { icon: <UserIcon />, value: "200+", label: "Active Reviewers" },
-            ].map(({ icon, value, label }) => (
-              <div key={label} style={{
-                display: "flex",
-                alignItems: "center",
-                gap: "16px",
-                padding: "18px 20px",
-                background: "#111620",
-                border: "1px solid #1b2333",
-                borderRadius: "10px",
-              }}>
-                <div style={{
-                  width: "40px", height: "40px",
-                  background: "#141d2b",
-                  borderRadius: "8px",
-                  display: "flex", alignItems: "center", justifyContent: "center",
-                  flexShrink: 0,
-                  border: "1px solid #1e2a38",
-                }}>
-                  {icon}
-                </div>
-                <div>
-                  <div style={{ fontSize: "20px", fontWeight: 700, color: "#d0dce8" }}>{value}</div>
-                  <div style={{ fontSize: "12px", color: "#55667a", marginTop: "2px" }}>{label}</div>
-                </div>
-              </div>
+              { icon: <BanIcon />, target: 1000, suffix: "+", label: "Verified Cheaters Tagged" },
+              { icon: <FileIcon />, target: 5000, suffix: "+", label: "Reports Processed" },
+              { icon: <UserIcon />, target: 200, suffix: "+", label: "Active Reviewers" },
+            ].map(({ icon, target, suffix, label }) => (
+              <StatCard key={label} icon={icon} target={target} suffix={suffix} label={label} />
             ))}
           </div>
         </section>
