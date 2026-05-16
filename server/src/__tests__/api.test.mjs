@@ -193,7 +193,7 @@ describe('3. Report Endpoints', () => {
       .get('/api/reports')
       .set('Authorization', `Bearer ${userToken}`);
     expect(res.status).toBe(200);
-    expect(Array.isArray(res.body)).toBe(true);
+    expect(Array.isArray(res.body.reports)).toBe(true);
   });
 
   test('GET /api/reports/:reportId - should get specific report', async () => {
