@@ -1,15 +1,35 @@
 import Report from '../models/Report.js';
-import { protect, adminOnly, moderatorOnly } from '../middleware/auth.js';
+import { v2 as cloudinary } from 'cloudinary';
+import dotenv from 'dotenv';
+
+dotenv.config();
+
+// Cloudinary Configuration
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET
+});
 
 export const createReport = async (req, res) => {
   try {
     const { reportId, reporterHandle, suspectHandle, contestId, problemId, reason, description } = req.body;
-    let { evidenceImage } = req.body;
+    let evidenceImage = undefined;
 
     if (req.file) {
-      // If a file was uploaded via multer, use its path
-      // In a real app you might want to use a URL or relative path
-      evidenceImage = `/uploads/${req.file.filename}`;
+      // Upload to Cloudinary using stream for memory buffer
+      const uploadPromise = new Promise((resolve, reject) => {
+        const stream = cloudinary.uploader.upload_stream(
+          { folder: 'community_watch_reports' },
+          (error, result) => {
+            if (error) reject(error);
+            else resolve(result.secure_url);
+          }
+        );
+        stream.end(req.file.buffer);
+      });
+
+      evidenceImage = await uploadPromise;
     }
 
     const report = new Report({

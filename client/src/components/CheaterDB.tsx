@@ -130,7 +130,9 @@ export default function CheaterDB() {
                   <div className="mb-8">
                     <p className="text-[10px] uppercase tracking-widest text-[#55667a] font-bold mb-2">Attachment</p>
                     <img 
-                      src={`${import.meta.env.VITE_API_URL?.replace('/api', '') || 'http://localhost:3000'}${selectedReport.evidenceImage}`} 
+                      src={selectedReport.evidenceImage.startsWith('http')
+                        ? selectedReport.evidenceImage
+                        : `${import.meta.env.VITE_API_URL?.replace('/api', '') || 'http://localhost:3000'}${selectedReport.evidenceImage}`}
                       alt="Evidence" 
                       className="w-full rounded border border-[#334155] shadow-inner"
                     />

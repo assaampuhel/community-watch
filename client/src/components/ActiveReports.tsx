@@ -316,7 +316,9 @@ export default function ActiveReports() {
                     <div style={{ marginBottom: "24px" }}>
                       <div style={{ fontSize: "11px", color: "#55667a", textTransform: "uppercase", marginBottom: "8px" }}>Visual Evidence</div>
                       <img 
-                        src={`${import.meta.env.VITE_API_URL?.replace('/api', '') || 'http://localhost:3000'}${selectedReport.evidenceImage}`} 
+                        src={selectedReport.evidenceImage.startsWith('http') 
+                          ? selectedReport.evidenceImage 
+                          : `${import.meta.env.VITE_API_URL?.replace('/api', '') || 'http://localhost:3000'}${selectedReport.evidenceImage}`} 
                         alt="Evidence" 
                         style={{ width: "100%", borderRadius: "6px", border: "1px solid #334155" }}
                       />
