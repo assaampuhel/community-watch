@@ -31,7 +31,7 @@ export const validateReport = [
   body('problemId').notEmpty().isString(),
   body('reason').notEmpty().isString(),
   body('description').notEmpty().isString(),
-  body('evidenceImage').optional().isURL()
+  body('evidenceImage').optional().isString()
 ];
 
 export const validateRequest = (req, res, next) => {

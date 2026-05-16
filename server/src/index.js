@@ -42,7 +42,10 @@ app.get('/api', (req, res) => {
 // Error handling
 app.use((err, req, res, next) => {
   console.error(err.stack);
-  res.status(500).json({ error: 'Something went wrong!' });
+  res.status(err.status || 500).json({ 
+    error: err.message || 'Something went wrong!',
+    ...(process.env.NODE_ENV === 'development' && { stack: err.stack })
+  });
 });
 
 // 404 handler

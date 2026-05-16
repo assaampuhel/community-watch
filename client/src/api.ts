@@ -15,23 +15,30 @@ export function clearToken() {
 async function apiFetch(endpoint: string, options: any = {}) {
   const token = getToken();
   
-  const headers: any = {
+  const headers = {
     'Authorization': token ? `Bearer ${token}` : '',
     ...options.headers,
   };
 
-  // Only set Content-Type to JSON if it's not FormData
-  if (!(options.body instanceof FormData)) {
-    headers['Content-Type'] = 'application/json';
-  }
-
-  const response = await fetch(`${API_BASE}${endpoint}`, {
+  const isFormData = options.body && (options.body instanceof FormData || typeof options.body.append === 'function');
+  
+  const fetchOptions = {
     ...options,
-    headers,
-  });
+    headers: {
+      ...headers,
+      ...(isFormData ? {} : { 'Content-Type': 'application/json' })
+    },
+    body: isFormData ? options.body : (options.body ? JSON.stringify(options.body) : undefined)
+  };
+
+  const response = await fetch(`${API_BASE}${endpoint}`, fetchOptions);
 
   const data = await response.json();
   if (!response.ok) {
+    if (data.errors && Array.isArray(data.errors)) {
+      let msg = data.errors.map((e: any) => `${e.path || e.param}: ${e.msg}`).join(', ');
+      throw new Error(msg);
+    }
     throw new Error(data.error || 'Something went wrong');
   }
   return data;
@@ -45,14 +52,14 @@ export type AuthResponse = {
 export async function apiRegister(handle: string, password: string): Promise<AuthResponse> {
   return apiFetch('/auth/signup', {
     method: 'POST',
-    body: JSON.stringify({ handle, password }),
+    body: { handle, password },
   });
 }
 
 export async function apiLogin(handle: string, password: string): Promise<AuthResponse> {
   return apiFetch('/auth/login', {
     method: 'POST',
-    body: JSON.stringify({ handle, password }),
+    body: { handle, password },
   });
 }
 
@@ -83,13 +90,13 @@ export async function getReports(filters?: Record<string, string | number>): Pro
 export async function createReport(reportData: any) {
   return apiFetch('/reports', {
     method: 'POST',
-    body: JSON.stringify(reportData),
+    body: reportData,
   });
 }
 
 export async function createReview(reviewData: any) {
   return apiFetch('/reviews', {
     method: 'POST',
-    body: JSON.stringify(reviewData),
+    body: reviewData,
   });
 }

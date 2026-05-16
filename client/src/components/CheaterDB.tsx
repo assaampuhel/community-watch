@@ -26,7 +26,7 @@ export default function CheaterDB() {
 
   return (
     <div className="min-h-screen bg-[#050a11] text-[#c9d4e0] font-sans flex flex-col">
-      <div className="bg-[#060d18] border-b border-[#1e2530] py-16 px-6 text-center">
+      <div className="bg-[#050a11] border-b border-[#1e2530] py-16 px-6 text-center">
         <h1 className="text-4xl font-bold text-[#a5c9ff] mb-4">Public Cheater Database</h1>
         <p className="text-[#8a9ab0] max-w-2xl mx-auto mb-8">
           A clinical, transparent record of verified cheating incidents across competitive programming platforms.
@@ -56,6 +56,8 @@ export default function CheaterDB() {
             <thead>
               <tr className="bg-[#080f19] border-b border-[#1e2530]">
                 <th className="px-6 py-4 text-[11px] text-[#55667a] uppercase">Handle</th>
+                <th className="px-6 py-4 text-[11px] text-[#55667a] uppercase">Contest</th>
+                <th className="px-6 py-4 text-[11px] text-[#55667a] uppercase">Prob</th>
                 <th className="px-6 py-4 text-[11px] text-[#55667a] uppercase">Reason</th>
                 <th className="px-6 py-4 text-[11px] text-[#55667a] uppercase">Status</th>
                 <th className="px-6 py-4 text-[11px] text-[#55667a] uppercase text-right">Evidence</th>
@@ -63,13 +65,15 @@ export default function CheaterDB() {
             </thead>
             <tbody className="divide-y divide-[#1e2530]">
               {loading ? (
-                <tr><td colSpan={4} className="px-6 py-10 text-center text-[#55667a]">Updating records...</td></tr>
+                <tr><td colSpan={6} className="px-6 py-10 text-center text-[#55667a]">Updating records...</td></tr>
               ) : reports.length === 0 ? (
-                <tr><td colSpan={4} className="px-6 py-10 text-center text-[#55667a]">No verified records found matching your search.</td></tr>
+                <tr><td colSpan={6} className="px-6 py-10 text-center text-[#55667a]">No verified records found matching your search.</td></tr>
               ) : (
                 reports.map((report) => (
                   <tr key={report.reportId} className="hover:bg-[#0d1520] transition-colors">
                     <td className="px-6 py-4 font-mono text-[#a5c9ff] text-sm">{report.suspectHandle}</td>
+                    <td className="px-6 py-4 text-sm text-[#fff] font-medium">{report.contestId}</td>
+                    <td className="px-6 py-4 text-sm text-[#8a9ab0]">{report.problemId}</td>
                     <td className="px-6 py-4 text-sm text-[#8a9ab0]">{report.reason}</td>
                     <td className="px-6 py-4">
                       <span className={`px-2.5 py-1 rounded-[3px] text-[10px] font-bold uppercase tracking-wider ${

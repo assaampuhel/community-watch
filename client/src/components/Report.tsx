@@ -8,6 +8,8 @@ export default function Report() {
   const navigate = useNavigate();
 
   const [suspectHandle, setSuspectHandle] = useState("");
+  const [contestId, setContestId] = useState("");
+  const [problemId, setProblemId] = useState("");
   const [reason, setReason] = useState("Code Similarity");
   const [description, setDescription] = useState("");
   const [loading, setLoading] = useState(false);
@@ -16,10 +18,13 @@ export default function Report() {
 
   const [file, setFile] = useState<File | null>(null);
 
+  const [showAuthPrompt, setShowAuthPrompt] = useState(false);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!isLoggedIn) {
-      setError("Please sign in to submit a report.");
+      setShowAuthPrompt(true);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
       return;
     }
 
@@ -31,8 +36,8 @@ export default function Report() {
       formData.append('reportId', `REP-${Date.now()}`);
       formData.append('reporterHandle', user?.handle || "anonymous");
       formData.append('suspectHandle', suspectHandle);
-      formData.append('contestId', "GLOBAL");
-      formData.append('problemId', "ALL");
+      formData.append('contestId', contestId);
+      formData.append('problemId', problemId);
       formData.append('reason', reason);
       formData.append('description', description);
       
@@ -42,7 +47,6 @@ export default function Report() {
 
       await createReport(formData);
       setSuccess(true);
-      setTimeout(() => navigate("/reports"), 2000);
     } catch (err: any) {
       setError(err.message || "Failed to submit report");
     } finally {
@@ -52,20 +56,28 @@ export default function Report() {
 
   if (success) {
     return (
-      <div className="min-h-[80vh] flex flex-col items-center justify-center bg-[#0d131f] text-white">
+      <div className="min-h-[80vh] flex flex-col items-center justify-center bg-[#050a11] text-white">
         <div className="w-20 h-20 bg-green-500/20 rounded-full flex items-center justify-center mb-6 border border-green-500/50">
           <svg className="w-10 h-10 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
           </svg>
         </div>
         <h2 className="text-2xl font-bold mb-2">Report Submitted</h2>
-        <p className="text-gray-400">Redirecting to active reports...</p>
+        <p className="text-gray-400 text-center max-w-md px-6">
+          Thank you for helping maintain community integrity. Your report has been logged and is awaiting peer review.
+        </p>
+        <button 
+          onClick={() => navigate("/")}
+          className="mt-8 px-6 py-2 bg-[#1e293b] border border-[#334155] rounded text-sm hover:bg-[#334155] transition-colors"
+        >
+          Return to Home
+        </button>
       </div>
     );
   }
 
   return (
-    <div className="bg-[#0d131f] text-white font-sans pb-12 min-h-[calc(100vh-64px)]">
+    <div className="bg-[#050a11] text-white font-sans pb-12 min-h-[calc(100vh-64px)]">
       {/* Main Content Container */}
       <main className="max-w-6xl mx-auto px-6 pt-10">
         
@@ -82,6 +94,37 @@ export default function Report() {
           
           {/* LEFT COLUMN: The Main Form */}
           <div className="lg:col-span-2 space-y-6">
+            
+            {showAuthPrompt && (
+              <div className="bg-[#1e293b] border-2 border-[#3b82f6] rounded-lg p-6 mb-6 animate-in fade-in zoom-in duration-300">
+                <div className="flex items-center gap-4 mb-4">
+                  <div className="w-12 h-12 bg-[#3b82f6]/20 rounded-full flex items-center justify-center text-[#3b82f6]">
+                    <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                    </svg>
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-bold text-white">Authentication Required</h3>
+                    <p className="text-gray-400 text-sm">You must have a verified account to submit reports to the community database.</p>
+                  </div>
+                </div>
+                <div className="flex gap-4">
+                  <button 
+                    onClick={() => navigate("/auth?mode=signup")}
+                    className="flex-1 bg-[#3b82f6] hover:bg-blue-400 text-white font-bold py-2.5 rounded transition-colors"
+                  >
+                    Create Account
+                  </button>
+                  <button 
+                    onClick={() => navigate("/auth?mode=signin")}
+                    className="flex-1 bg-transparent border border-[#334155] hover:bg-[#334155] text-white font-bold py-2.5 rounded transition-colors"
+                  >
+                    Sign In
+                  </button>
+                </div>
+              </div>
+            )}
+
             <form onSubmit={handleSubmit} className="bg-[#1a202c] border border-[#334155] rounded-lg p-6 shadow-xl">
               
               {/* Top Inputs: Reporter & Suspect */}
@@ -117,6 +160,36 @@ export default function Report() {
                       className="bg-transparent text-white text-sm w-full outline-none placeholder-gray-600" 
                     />
                   </div>
+                </div>
+              </div>
+
+              {/* Contest & Problem IDs */}
+              <div className="grid grid-cols-2 gap-6 mb-6">
+                <div>
+                  <label className="block text-[11px] font-mono text-gray-400 mb-2 uppercase tracking-wider">
+                    Contest ID <span className="text-red-500">*</span>
+                  </label>
+                  <input 
+                    type="text" 
+                    required
+                    value={contestId}
+                    onChange={(e) => setContestId(e.target.value)}
+                    placeholder="e.g. 1920" 
+                    className="w-full bg-[#0d131f] border border-[#334155] rounded px-3 py-2.5 text-sm text-white outline-none focus:border-[#9fcaff] transition-colors"
+                  />
+                </div>
+                <div>
+                  <label className="block text-[11px] font-mono text-gray-400 mb-2 uppercase tracking-wider">
+                    Problem ID <span className="text-red-500">*</span>
+                  </label>
+                  <input 
+                    type="text" 
+                    required
+                    value={problemId}
+                    onChange={(e) => setProblemId(e.target.value)}
+                    placeholder="e.g. C" 
+                    className="w-full bg-[#0d131f] border border-[#334155] rounded px-3 py-2.5 text-sm text-white outline-none focus:border-[#9fcaff] transition-colors"
+                  />
                 </div>
               </div>
 

@@ -189,7 +189,8 @@ export default function ActiveReports() {
                 <thead>
                   <tr style={{ borderBottom: "1px solid #1e2530" }}>
                     <th style={{ padding: "16px 24px", fontSize: "12px", color: "#55667a", textTransform: "uppercase" }}>Target Handle</th>
-                    <th style={{ padding: "16px 24px", fontSize: "12px", color: "#55667a", textTransform: "uppercase" }}>Contest</th>
+                    <th style={{ padding: "16px 24px", fontSize: "12px", color: "#55667a", textTransform: "uppercase" }}>Contest ID</th>
+                    <th style={{ padding: "16px 24px", fontSize: "12px", color: "#55667a", textTransform: "uppercase" }}>Problem</th>
                     <th style={{ padding: "16px 24px", fontSize: "12px", color: "#55667a", textTransform: "uppercase", textAlign: "right" }}>Action</th>
                   </tr>
                 </thead>
@@ -197,7 +198,8 @@ export default function ActiveReports() {
                   {reports.map((report, i) => (
                     <tr key={report.reportId} style={{ borderBottom: i === reports.length - 1 ? "none" : "1px solid #1e2530" }}>
                       <td style={{ padding: "16px 24px", color: "#a5c9ff", fontSize: "14px", fontWeight: 500 }}>{report.suspectHandle}</td>
-                      <td style={{ padding: "16px 24px", color: "#8a9ab0", fontSize: "14px" }}>{report.contestId}</td>
+                      <td style={{ padding: "16px 24px", color: "#fff", fontSize: "14px", fontWeight: 600 }}>{report.contestId}</td>
+                      <td style={{ padding: "16px 24px", color: "#8a9ab0", fontSize: "14px" }}>{report.problemId}</td>
                       <td style={{ padding: "16px 24px", textAlign: "right" }}>
                         <div style={{ display: "flex", gap: "8px", justifyContent: "flex-end" }}>
                           <button
