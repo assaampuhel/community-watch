@@ -1,9 +1,10 @@
-import AuthForm from "./components/Authform";
+import Authform from "./components/Authform";
 import HomePage from "./components/HomePage";
 import ActiveReports from "./components/ActiveReports";
 import CheaterDB from "./components/CheaterDB";
 import Navbar from "./components/Navbar";
 import Report from "./components/Report";
+import { AuthProvider } from "./context/AuthContext";
 
 import {
   createBrowserRouter,
@@ -42,18 +43,22 @@ const router = createBrowserRouter([
         path: "/report",
         element: <Report />,
       },
+      {
+        path: "/auth",
+        element: <Authform />,
+      },
     ]
-  },
-  {
-    path: "/auth",
-    element: <AuthForm />,
   },
 ]);
 
+
+
 function App() {
   return (
-    <RouterProvider router={router} />
-  )
+    <AuthProvider>
+      <RouterProvider router={router} />
+    </AuthProvider>
+  );
 }
 
 export default App;

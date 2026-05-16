@@ -15,18 +15,21 @@ process.env.NODE_ENV = 'test';
 const testUsers = {
   admin: {
     handle: 'admin_test',
+    password: 'admin123',
     rating: 5,
     role: 'admin',
     avatar: null
   },
   moderator: {
     handle: 'mod_test',
+    password: 'mod123',
     rating: 3,
     role: 'moderator',
     avatar: null
   },
   user: {
     handle: 'user_test',
+    password: 'user123',
     rating: 1,
     role: 'user',
     avatar: null

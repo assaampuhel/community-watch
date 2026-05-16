@@ -1,9 +1,8 @@
-#!/bin/bash
+// Database seed script for testing
+// Run: mongosh < seed-test-data.js
 
-# Database seed script for testing
-# Run: mongosh < seed-test-data.js
-
-use envision;
+// Switch to the 'envision' database using valid JavaScript
+db = db.getSiblingDB('envision');
 
 // Clear existing data
 db.users.deleteMany({});
@@ -54,7 +53,7 @@ db.reports.insertOne({
 });
 
 // Insert test review
-db.reports.findOne({ reportId: "MANUAL_TEST_RPT_001" });
+// First find the report to get a reference if needed, though we use reportId
 const reportRef = db.reports.findOne({ reportId: "MANUAL_TEST_RPT_001" });
 
 db.reviews.insertOne({

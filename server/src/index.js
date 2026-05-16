@@ -6,6 +6,7 @@ import connectDB from './config/db.js';
 import usersRouter from './routes/users.js';
 import reportsRouter from './routes/reports.js';
 import reviewsRouter from './routes/reviews.js';
+import authRouter from './routes/auth.js';
 
 dotenv.config();
 
@@ -23,15 +24,16 @@ app.use(
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Health check
-app.get('/health', (req, res) => {
-  res.status(200).json({ status: 'OK', timestamp: new Date().toISOString() });
-});
+  // Health check
+  app.get('/health', (req, res) => {
+    res.status(200).json({ status: 'OK', timestamp: new Date().toISOString() });
+  });
 
-// API routes
-app.use('/api/users', usersRouter);
-app.use('/api/reports', reportsRouter);
-app.use('/api/reviews', reviewsRouter);
+  // API routes
+  app.use('/api/auth', authRouter);
+  app.use('/api/users', usersRouter);
+  app.use('/api/reports', reportsRouter);
+  app.use('/api/reviews', reviewsRouter);
 
 app.get('/api', (req, res) => {
   res.status(200).json({ message: 'Server is running' });

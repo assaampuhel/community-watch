@@ -3,7 +3,14 @@ import { protect, adminOnly, moderatorOnly } from '../middleware/auth.js';
 
 export const createReport = async (req, res) => {
   try {
-    const { reportId, reporterHandle, suspectHandle, contestId, problemId, reason, description, evidenceImage } = req.body;
+    const { reportId, reporterHandle, suspectHandle, contestId, problemId, reason, description } = req.body;
+    let { evidenceImage } = req.body;
+
+    if (req.file) {
+      // If a file was uploaded via multer, use its path
+      // In a real app you might want to use a URL or relative path
+      evidenceImage = `/uploads/${req.file.filename}`;
+    }
 
     const report = new Report({
       reportId,

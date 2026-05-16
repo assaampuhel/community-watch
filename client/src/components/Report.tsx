@@ -1,11 +1,74 @@
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
+import { createReport } from "../api";
 
 export default function Report() {
+  const { user, isLoggedIn } = useAuth();
+  const navigate = useNavigate();
+
+  const [suspectHandle, setSuspectHandle] = useState("");
+  const [reason, setReason] = useState("Code Similarity");
+  const [description, setDescription] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState(false);
+
+  const [file, setFile] = useState<File | null>(null);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!isLoggedIn) {
+      setError("Please sign in to submit a report.");
+      return;
+    }
+
+    setLoading(true);
+    setError("");
+
+    try {
+      const formData = new FormData();
+      formData.append('reportId', `REP-${Date.now()}`);
+      formData.append('reporterHandle', user?.handle || "anonymous");
+      formData.append('suspectHandle', suspectHandle);
+      formData.append('contestId', "GLOBAL");
+      formData.append('problemId', "ALL");
+      formData.append('reason', reason);
+      formData.append('description', description);
+      
+      if (file) {
+        formData.append('evidenceImage', file);
+      }
+
+      await createReport(formData);
+      setSuccess(true);
+      setTimeout(() => navigate("/reports"), 2000);
+    } catch (err: any) {
+      setError(err.message || "Failed to submit report");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  if (success) {
+    return (
+      <div className="min-h-[80vh] flex flex-col items-center justify-center bg-[#0d131f] text-white">
+        <div className="w-20 h-20 bg-green-500/20 rounded-full flex items-center justify-center mb-6 border border-green-500/50">
+          <svg className="w-10 h-10 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+          </svg>
+        </div>
+        <h2 className="text-2xl font-bold mb-2">Report Submitted</h2>
+        <p className="text-gray-400">Redirecting to active reports...</p>
+      </div>
+    );
+  }
 
   return (
-    
-    <div className="bg-[#0d131f] text-white font-sans pb-12 min-h-[calc(100vh-73px)]">
+    <div className="bg-[#0d131f] text-white font-sans pb-12 min-h-[calc(100vh-64px)]">
       {/* Main Content Container */}
       <main className="max-w-6xl mx-auto px-6 pt-10">
+        
         {/* Page Header */}
         <div className="mb-8">
           <h1 className="text-3xl font-bold mb-2">Report Misconduct</h1>
@@ -19,24 +82,20 @@ export default function Report() {
           
           {/* LEFT COLUMN: The Main Form */}
           <div className="lg:col-span-2 space-y-6">
-            <div className="bg-[#1a202c] border border-[#334155] rounded-lg p-6 shadow-xl">
+            <form onSubmit={handleSubmit} className="bg-[#1a202c] border border-[#334155] rounded-lg p-6 shadow-xl">
               
               {/* Top Inputs: Reporter & Suspect */}
               <div className="grid grid-cols-2 gap-6 mb-6">
                 
                 <div>
                   <label className="block text-[11px] font-mono text-gray-400 mb-2 uppercase tracking-wider">
-                    Your Codeforces Handle <span className="text-red-500">*</span>
+                    Your Codeforces Handle
                   </label>
-                  <div className="flex items-center bg-[#0d131f] border border-[#334155] rounded px-3 py-2.5 focus-within:border-[#9fcaff] transition-colors">
-                    <svg className="w-4 h-4 text-gray-400 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <div className="flex items-center bg-[#0d131f]/50 border border-[#334155] rounded px-3 py-2.5 text-gray-500">
+                    <svg className="w-4 h-4 text-gray-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                     </svg>
-                    <input 
-                      type="text" 
-                      placeholder="e.g. your_handle" 
-                      className="bg-transparent text-white text-sm w-full outline-none placeholder-gray-600" 
-                    />
+                    <span className="text-sm font-mono">{isLoggedIn ? user?.handle : "Guest User"}</span>
                   </div>
                 </div>
 
@@ -51,11 +110,32 @@ export default function Report() {
                     </svg>
                     <input 
                       type="text" 
+                      required
+                      value={suspectHandle}
+                      onChange={(e) => setSuspectHandle(e.target.value)}
                       placeholder="e.g. tourist" 
                       className="bg-transparent text-white text-sm w-full outline-none placeholder-gray-600" 
                     />
                   </div>
                 </div>
+              </div>
+
+              {/* Primary Reason Select */}
+              <div className="mb-6">
+                <label className="block text-[11px] font-mono text-gray-400 mb-2 uppercase tracking-wider">
+                  Primary Reason <span className="text-red-500">*</span>
+                </label>
+                <select 
+                  required
+                  value={reason}
+                  onChange={(e) => setReason(e.target.value)}
+                  className="w-full bg-[#0d131f] border border-[#334155] rounded px-3 py-2.5 text-sm text-gray-300 outline-none focus:border-[#9fcaff] transition-colors"
+                >
+                  <option value="Code Similarity">Code Similarity (Plagiarism)</option>
+                  <option value="Outside Assistance">Outside Assistance</option>
+                  <option value="Multiple Accounts">Multiple Accounts</option>
+                  <option value="Other">Other Violation</option>
+                </select>
               </div>
 
               {/* Rich Text Editor Mockup */}
@@ -67,14 +147,17 @@ export default function Report() {
                 <div className="bg-[#0d131f] border border-[#334155] rounded-md overflow-hidden focus-within:border-[#9fcaff] transition-colors">
                   {/* Fake Toolbar */}
                   <div className="flex items-center gap-4 px-4 py-2 border-b border-[#334155] bg-[#161c27]">
-                    <button className="text-gray-400 hover:text-white font-bold font-serif text-sm">B</button>
-                    <button className="text-gray-400 hover:text-white italic font-serif text-sm">I</button>
+                    <button type="button" className="text-gray-400 hover:text-white font-bold font-serif text-sm">B</button>
+                    <button type="button" className="text-gray-400 hover:text-white italic font-serif text-sm">I</button>
                     <div className="w-px h-4 bg-[#334155]"></div>
-                    <button className="text-gray-400 hover:text-white">🔗</button>
-                    <button className="text-gray-400 hover:text-white font-mono text-xs">&lt; &gt;</button>
+                    <button type="button" className="text-gray-400 hover:text-white">🔗</button>
+                    <button type="button" className="text-gray-400 hover:text-white font-mono text-xs">&lt; &gt;</button>
                   </div>
                   
                   <textarea 
+                    required
+                    value={description}
+                    onChange={(e) => setDescription(e.target.value)}
                     placeholder="Provide detailed evidence, including contest links, problem IDs, and specific code snippets demonstrating similarities..."
                     className="w-full h-48 bg-transparent text-gray-300 text-sm p-4 outline-none resize-none"
                   ></textarea>
@@ -87,29 +170,55 @@ export default function Report() {
                   Attachments (Screenshots / Evidence)
                 </label>
                 <div className="relative border-2 border-dashed border-[#334155] rounded-md p-8 text-center hover:border-[#9fcaff] hover:bg-[#161c27] transition-all cursor-pointer bg-[#0d131f] group">
-                  <input type="file" className="absolute inset-0 w-full h-full opacity-0 cursor-pointer" accept="image/png, image/jpeg, image/gif" multiple />
+                  <input 
+                    type="file" 
+                    className="absolute inset-0 w-full h-full opacity-0 cursor-pointer" 
+                    accept="image/png, image/jpeg, image/gif" 
+                    onChange={(e) => setFile(e.target.files?.[0] || null)}
+                  />
                   <svg className="w-8 h-8 text-gray-400 mx-auto mb-3 group-hover:text-[#9fcaff] transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                   </svg>
-                  <p className="text-sm text-gray-300 font-medium mb-1 group-hover:text-[#9fcaff] transition-colors">Click to upload or drag and drop</p>
+                  <p className="text-sm text-gray-300 font-medium mb-1 group-hover:text-[#9fcaff] transition-colors">
+                    {file ? file.name : "Click to upload or drag and drop"}
+                  </p>
                   <p className="text-xs text-gray-500">PNG, JPG, GIF up to 5MB</p>
                 </div>
               </div>
 
+              {error && (
+                <div className="mb-6 p-3 bg-red-500/10 border border-red-500/30 rounded text-red-400 text-xs font-mono">
+                  {error}
+                </div>
+              )}
+
               {/* Action Buttons */}
               <div className="flex justify-end gap-4 mt-8 pt-6 border-t border-[#334155]">
-                <button className="px-6 py-2 rounded text-sm font-medium text-gray-300 hover:text-white border border-[#334155] hover:bg-[#334155]/50 transition-colors">
+                <button 
+                  type="button"
+                  onClick={() => navigate("/")}
+                  className="px-6 py-2 rounded text-sm font-medium text-gray-300 hover:text-white border border-[#334155] hover:bg-[#334155]/50 transition-colors">
                   Cancel
                 </button>
-                <button className="px-6 py-2 rounded text-sm font-medium bg-[#9fcaff] text-[#003259] hover:bg-[#d2e4ff] transition-colors flex items-center gap-2">
-                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
-                  </svg>
-                  Submit Report for Peer Review
+                <button 
+                  type="submit"
+                  disabled={loading}
+                  className="px-6 py-2 rounded text-sm font-medium bg-[#9fcaff] text-[#003259] hover:bg-[#d2e4ff] transition-colors flex items-center gap-2 shadow-lg shadow-[#9fcaff]/20"
+                >
+                  {loading ? (
+                    "Submitting..."
+                  ) : (
+                    <>
+                      <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+                      </svg>
+                      Submit Report for Peer Review
+                    </>
+                  )}
                 </button>
               </div>
 
-            </div>
+            </form>
           </div>
 
           {/* RIGHT COLUMN: Reporting Guidelines */}
