@@ -24,6 +24,40 @@ const responsiveStyles = `
     .cf-stats-grid { grid-template-columns: repeat(2, 1fr) !important; }
     .cf-review-section { margin: 0 24px 48px !important; }
   }
+
+  /* Premium Homescreen Card Buttons Hover States */
+  .cf-nav-btns-row a {
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  }
+  .cf-nav-btns-row a:hover {
+    transform: translateY(-1px) !important;
+    background: #1f2a3a !important;
+    border-color: #3a4a60 !important;
+    color: #ffffff !important;
+    box-shadow: 0 4px 10px rgba(159, 202, 255, 0.09) !important;
+  }
+  .cf-nav-btns-row a:active {
+    transform: translateY(0.3px) !important;
+  }
+
+  /* Homescreen action and reviewer button highlights */
+  .cf-action-row button,
+  .cf-review-section button {
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  }
+  
+  .cf-action-row button:hover,
+  .cf-review-section button:hover {
+    transform: translateY(-1px) !important;
+    filter: brightness(1.09) !important;
+    border-color: #3a82f6 !important;
+    box-shadow: 0 4px 10px rgba(59, 130, 246, 0.12) !important;
+  }
+
+  .cf-action-row button:active,
+  .cf-review-section button:active {
+    transform: translateY(0.3px) !important;
+  }
 `;
 
 

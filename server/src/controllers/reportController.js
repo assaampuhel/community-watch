@@ -103,14 +103,14 @@ export const getReportById = async (req, res) => {
 
 export const updateReportStatus = async (req, res) => {
   try {
-    const { status } = req.body;
+    const { status, moderatorComment } = req.body;
     if (!['pending', 'reviewed', 'resolved'].includes(status)) {
       return res.status(400).json({ error: 'Invalid status' });
     }
 
     const report = await Report.findOneAndUpdate(
       { reportId: req.params.reportId },
-      { status },
+      { status, moderatorComment },
       { new: true }
     );
 

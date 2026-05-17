@@ -69,88 +69,93 @@ function Navbar() {
         <div className="flex md:hidden items-center">
           <button
             onClick={toggleMenu}
-            className="text-[#8a9ab0] hover:text-white focus:outline-none p-1.5"
+            className="text-[#8a9ab0] hover:text-white focus:outline-none p-1.5 relative w-8 h-8 flex flex-col justify-center items-center gap-1.5 group cursor-pointer"
             aria-label="Toggle Menu"
           >
-            {isOpen ? (
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            ) : (
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
-              </svg>
-            )}
+            {/* Top Line */}
+            <span className={`w-5 h-[2px] bg-[#8a9ab0] group-hover:bg-white rounded transition-all duration-300 ease-in-out transform ${
+              isOpen ? "rotate-45 translate-y-2" : ""
+            }`} />
+            {/* Middle Line */}
+            <span className={`w-5 h-[2px] bg-[#8a9ab0] group-hover:bg-white rounded transition-all duration-300 ease-in-out ${
+              isOpen ? "opacity-0" : ""
+            }`} />
+            {/* Bottom Line */}
+            <span className={`w-5 h-[2px] bg-[#8a9ab0] group-hover:bg-white rounded transition-all duration-300 ease-in-out transform ${
+              isOpen ? "-rotate-45 -translate-y-2" : ""
+            }`} />
           </button>
         </div>
       </div>
 
-      {/* Mobile Slide-down Menu */}
-      {isOpen && (
-        <div className="md:hidden absolute top-16 left-0 right-0 border-b border-[#1e2530] bg-[#050a11] px-4 py-6 space-y-4 shadow-2xl z-50">
-          <div className="flex flex-col space-y-3">
-            <NavLink 
-              to="/reports" 
-              onClick={closeMenu}
-              className={({ isActive }) => 
-                `py-2 text-[15px] font-medium no-underline transition-colors ${isActive ? "text-[#a5c9ff]" : "text-[#8a9ab0]"}`
-              }
-            >
-              Reports
-            </NavLink>
-            <NavLink 
-              to="/cheaters" 
-              onClick={closeMenu}
-              className={({ isActive }) => 
-                `py-2 text-[15px] font-medium no-underline transition-colors ${isActive ? "text-[#a5c9ff]" : "text-[#8a9ab0]"}`
-              }
-            >
-              Cheater DB
-            </NavLink>
-            <NavLink 
-              to="/report" 
-              onClick={closeMenu}
-              className={({ isActive }) => 
-                `py-2 text-[15px] font-medium no-underline transition-colors ${isActive ? "text-[#a5c9ff]" : "text-[#8a9ab0]"}`
-              }
-            >
-              New Report
-            </NavLink>
-          </div>
-
-          <div className="border-t border-[#1e2530] pt-4 flex flex-col space-y-3">
-            {isLoggedIn ? (
-              <div className="flex flex-col space-y-3">
-                <div className="flex items-center justify-between">
-                  <div className="flex flex-col">
-                    <span className="text-[15px] font-bold text-[#a5c9ff]">{user?.handle}</span>
-                    {isModerator && <span className="text-[10px] text-orange-400 font-mono uppercase tracking-tighter mt-0.5">Moderator</span>}
-                  </div>
-                  <button 
-                    onClick={() => { logout(); closeMenu(); }}
-                    className="text-xs font-bold text-[#ffb4ab] border border-[#ffb4ab]/30 px-3 py-1.5 rounded hover:bg-[#ffb4ab]/10 transition-colors"
-                  >
-                    Log Out
-                  </button>
-                </div>
-              </div>
-            ) : (
-              <div className="flex gap-4 w-full">
-                <NavLink to="/auth?mode=signin" onClick={closeMenu} className="flex-1">
-                  <button className="w-full text-[14px] text-[#c9d4e0] hover:text-white py-2 rounded border border-[#1e2530] hover:bg-[#151b25] transition-colors cursor-pointer bg-transparent">
-                    Sign In
-                  </button>
-                </NavLink>
-                <NavLink to="/auth?mode=signup" onClick={closeMenu} className="flex-1">
-                  <button className="w-full text-[14px] font-bold text-black bg-[#a5c9ff] py-2 rounded hover:bg-[#8ab6f8] transition-colors cursor-pointer border-none">
-                    Sign Up
-                  </button>
-                </NavLink>
-              </div>
-            )}
-          </div>
+      {/* Mobile Slide-down Menu with Smooth Transition */}
+      <div className={`md:hidden absolute top-16 left-0 right-0 border-b border-[#1e2530] bg-[#050a11] px-4 py-6 space-y-4 shadow-2xl z-50 transition-all duration-300 ease-out origin-top transform ${
+        isOpen 
+          ? "opacity-100 translate-y-0 scale-y-100 pointer-events-auto" 
+          : "opacity-0 -translate-y-4 scale-y-95 pointer-events-none"
+      }`}>
+        <div className="flex flex-col space-y-3">
+          <NavLink 
+            to="/reports" 
+            onClick={closeMenu}
+            className={({ isActive }) => 
+              `py-2 text-[15px] font-medium no-underline transition-colors ${isActive ? "text-[#a5c9ff]" : "text-[#8a9ab0]"}`
+            }
+          >
+            Reports
+          </NavLink>
+          <NavLink 
+            to="/cheaters" 
+            onClick={closeMenu}
+            className={({ isActive }) => 
+              `py-2 text-[15px] font-medium no-underline transition-colors ${isActive ? "text-[#a5c9ff]" : "text-[#8a9ab0]"}`
+            }
+          >
+            Cheater DB
+          </NavLink>
+          <NavLink 
+            to="/report" 
+            onClick={closeMenu}
+            className={({ isActive }) => 
+              `py-2 text-[15px] font-medium no-underline transition-colors ${isActive ? "text-[#a5c9ff]" : "text-[#8a9ab0]"}`
+            }
+          >
+            New Report
+          </NavLink>
         </div>
-      )}
+
+        <div className="border-t border-[#1e2530] pt-4 flex flex-col space-y-3">
+          {isLoggedIn ? (
+            <div className="flex flex-col space-y-3">
+              <div className="flex items-center justify-between">
+                <div className="flex flex-col">
+                  <span className="text-[15px] font-bold text-[#a5c9ff]">{user?.handle}</span>
+                  {isModerator && <span className="text-[10px] text-orange-400 font-mono uppercase tracking-tighter mt-0.5">Moderator</span>}
+                </div>
+                <button 
+                  onClick={() => { logout(); closeMenu(); }}
+                  className="text-xs font-bold text-[#ffb4ab] border border-[#ffb4ab]/30 px-3 py-1.5 rounded hover:bg-[#ffb4ab]/10 transition-colors"
+                >
+                  Log Out
+                </button>
+              </div>
+            </div>
+          ) : (
+            <div className="flex gap-4 w-full">
+              <NavLink to="/auth?mode=signin" onClick={closeMenu} className="flex-1">
+                <button className="w-full text-[14px] text-[#c9d4e0] hover:text-white py-2 rounded border border-[#1e2530] hover:bg-[#151b25] transition-colors cursor-pointer bg-transparent">
+                  Sign In
+                </button>
+              </NavLink>
+              <NavLink to="/auth?mode=signup" onClick={closeMenu} className="flex-1">
+                <button className="w-full text-[14px] font-bold text-black bg-[#a5c9ff] py-2 rounded hover:bg-[#8ab6f8] transition-colors cursor-pointer border-none">
+                  Sign Up
+                </button>
+              </NavLink>
+            </div>
+          )}
+        </div>
+      </div>
     </nav>
   );
 }

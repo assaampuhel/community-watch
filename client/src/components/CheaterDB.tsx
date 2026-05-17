@@ -20,6 +20,11 @@ export default function CheaterDB() {
   const [loading, setLoading] = useState(true);
   const [total, setTotal] = useState(0);
   const [selectedReport, setSelectedReport] = useState<ReportData | null>(null);
+  const [currentPage, setCurrentPage] = useState(1);
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [search]);
 
   useEffect(() => {
     async function fetchCheaters() {
@@ -41,6 +46,11 @@ export default function CheaterDB() {
     const timer = setTimeout(fetchCheaters, 300); // Debounce search
     return () => clearTimeout(timer);
   }, [search]);
+
+  const itemsPerPage = 10;
+  const totalPages = Math.ceil(reports.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const displayedReports = reports.slice(startIndex, startIndex + itemsPerPage);
 
   return (
     <div className="min-h-screen bg-[#050a11] text-[#c9d4e0] font-sans flex flex-col">
@@ -87,7 +97,7 @@ export default function CheaterDB() {
               ) : reports.length === 0 ? (
                 <tr><td colSpan={6} className="px-6 py-10 text-center text-[#55667a]">No verified records found matching your search.</td></tr>
               ) : (
-                reports.map((report) => (
+                displayedReports.map((report) => (
                   <tr key={report.reportId} className="hover:bg-[#0d1520] transition-colors">
                     <td className="px-6 py-4 font-mono text-[#a5c9ff] text-sm">{report.suspectHandle}</td>
                     <td className="px-6 py-4 text-sm text-[#fff] font-medium">{report.contestId}</td>
@@ -123,6 +133,53 @@ export default function CheaterDB() {
           </table>
         </div>
 
+        {/* Premium Pagination Controls */}
+        {totalPages > 1 && (
+          <div className="flex flex-col sm:flex-row justify-between items-center gap-4 mt-6 px-2 py-4 border-t border-[#1e2530]/30 animate-fade-in">
+            <span className="text-xs text-[#55667a] text-center sm:text-left">
+              Showing <span className="text-[#a5c9ff] font-medium">{startIndex + 1}</span> to{" "}
+              <span className="text-[#a5c9ff] font-medium">
+                {Math.min(startIndex + itemsPerPage, reports.length)}
+              </span>{" "}
+              of <span className="text-[#a5c9ff] font-medium">{reports.length}</span> records
+            </span>
+            <div className="flex items-center gap-1.5 flex-wrap justify-center">
+              {/* Prev Button */}
+              <button
+                onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+                disabled={currentPage === 1}
+                className="px-3 py-1.5 bg-[#0b121d] border border-[#1e2530] text-xs font-semibold rounded text-[#c9d4e0] hover:bg-[#1a2333] hover:border-[#2e3d50] hover:text-white disabled:opacity-40 disabled:hover:bg-[#0b121d] disabled:hover:border-[#1e2530] disabled:hover:text-[#c9d4e0] disabled:cursor-not-allowed transition-all cursor-pointer"
+              >
+                Previous
+              </button>
+
+              {/* Page Numbers */}
+              {Array.from({ length: totalPages }, (_, i) => i + 1).map((pageNum) => (
+                <button
+                  key={pageNum}
+                  onClick={() => setCurrentPage(pageNum)}
+                  className={`px-3 py-1.5 text-xs font-semibold rounded transition-all cursor-pointer ${
+                    currentPage === pageNum
+                      ? "bg-[#9fcaff] text-[#003259] shadow-lg shadow-[#9fcaff]/10 font-bold"
+                      : "bg-[#0b121d] border border-[#1e2530] text-[#c9d4e0] hover:bg-[#1a2333] hover:border-[#2e3d50] hover:text-white"
+                  }`}
+                >
+                  {pageNum}
+                </button>
+              ))}
+
+              {/* Next Button */}
+              <button
+                onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+                disabled={currentPage === totalPages}
+                className="px-3 py-1.5 bg-[#0b121d] border border-[#1e2530] text-xs font-semibold rounded text-[#c9d4e0] hover:bg-[#1a2333] hover:border-[#2e3d50] hover:text-white disabled:opacity-40 disabled:hover:bg-[#0b121d] disabled:hover:border-[#1e2530] disabled:hover:text-[#c9d4e0] disabled:cursor-not-allowed transition-all cursor-pointer"
+              >
+                Next
+              </button>
+            </div>
+          </div>
+        )}
+
         {/* Details Modal */}
         {selectedReport && (
           <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4 sm:p-6 backdrop-blur-sm">
@@ -148,6 +205,14 @@ export default function CheaterDB() {
                     {selectedReport.description}
                   </div>
                 </div>
+                {selectedReport.moderatorComment && (
+                  <div className="mb-8">
+                    <p className="text-[10px] uppercase tracking-widest text-[#9fcaff] font-bold mb-2">Moderator Decision & Rationale</p>
+                    <div className="bg-[#0e1622] border border-[#2e3d50] p-4 rounded text-sm text-[#dde2f3] leading-relaxed whitespace-pre-wrap font-sans">
+                      {selectedReport.moderatorComment}
+                    </div>
+                  </div>
+                )}
                 {selectedReport.evidenceImage && (
                   <div className="mb-8">
                     <p className="text-[10px] uppercase tracking-widest text-[#55667a] font-bold mb-2">Attachment</p>

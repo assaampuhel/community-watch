@@ -55,6 +55,7 @@ export default function ActiveReports() {
   const [selectedReport, setSelectedReport] = useState<ReportData | null>(null);
   const [error, setError] = useState('');
   const [actionLoading, setActionLoading] = useState<string | null>(null);
+  const [comment, setComment] = useState('');
 
   useEffect(() => {
     fetchReports();
@@ -72,7 +73,7 @@ export default function ActiveReports() {
   };
 
   const handleReview = async (reportId: string, decision: 'approve' | 'reject') => {
-    if (!user) return;
+    if (!user || !comment.trim()) return;
     setActionLoading(reportId);
     try {
       // 1. Create the review record
@@ -81,7 +82,7 @@ export default function ActiveReports() {
         reportId,
         reviewerHandle: user.handle,
         decision,
-        comment: decision === 'approve' ? 'Approved by moderator' : 'Rejected by moderator',
+        comment: comment.trim(),
       });
 
       // 2. Update the report status to move it out of pending (using the dedicated endpoint)
@@ -91,12 +92,16 @@ export default function ActiveReports() {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${localStorage.getItem('token')}`
         },
-        body: JSON.stringify({ status: decision === 'approve' ? 'reviewed' : 'resolved' })
+        body: JSON.stringify({ 
+          status: decision === 'approve' ? 'reviewed' : 'resolved',
+          moderatorComment: comment.trim()
+        })
       });
 
       // Remove the reviewed report from the list
       setReports(prev => prev.filter(r => r.reportId !== reportId));
       setSelectedReport(null);
+      setComment('');
     } catch (err: any) {
       setError(err.message);
     } finally {
@@ -257,7 +262,7 @@ export default function ActiveReports() {
               }}>
                 <div style={{ padding: "24px", borderBottom: "1px solid #1e2530", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                   <h2 style={{ fontSize: "18px", fontWeight: 600, color: "#fff" }}>Report Details</h2>
-                  <button onClick={() => setSelectedReport(null)} style={{ background: "none", border: "none", color: "#55667a", cursor: "pointer", fontSize: "20px" }}>×</button>
+                  <button onClick={() => { setSelectedReport(null); setComment(''); }} style={{ background: "none", border: "none", color: "#55667a", cursor: "pointer", fontSize: "20px" }}>×</button>
                 </div>
                 
                 <div style={{ padding: "24px" }}>
@@ -306,41 +311,66 @@ export default function ActiveReports() {
                   )}
 
                   {isModerator ? (
-                    <div className="cf-modal-buttons" style={{ display: "flex", gap: "12px", marginTop: "32px", paddingTop: "24px", borderTop: "1px solid #1e2530" }}>
-                      <button 
-                        onClick={() => handleReview(selectedReport.reportId, 'approve')}
-                        disabled={!!actionLoading}
-                        style={{
-                          flex: 1,
-                          padding: "12px",
-                          backgroundColor: "#064e3b",
-                          border: "none",
-                          borderRadius: "6px",
-                          color: "#6ee7b7",
-                          fontWeight: 600,
-                          cursor: "pointer",
-                          opacity: actionLoading ? 0.5 : 1
-                        }}
-                      >
-                        {actionLoading === selectedReport.reportId ? "Processing..." : "Agree - Flag as Cheater"}
-                      </button>
-                      <button 
-                        onClick={() => handleReview(selectedReport.reportId, 'reject')}
-                        disabled={!!actionLoading}
-                        style={{
-                          flex: 1,
-                          padding: "12px",
-                          backgroundColor: "#7f1d1d",
-                          border: "none",
-                          borderRadius: "6px",
-                          color: "#fca5a5",
-                          fontWeight: 600,
-                          cursor: "pointer",
-                          opacity: actionLoading ? 0.5 : 1
-                        }}
-                      >
-                        Reject Claim
-                      </button>
+                    <div style={{ marginTop: "32px", paddingTop: "24px", borderTop: "1px solid #1e2530" }}>
+                      <div style={{ marginBottom: "20px" }}>
+                        <div style={{ fontSize: "11px", color: "#55667a", textTransform: "uppercase", marginBottom: "8px", display: "flex", justifyContent: "space-between" }}>
+                          <span>Moderator Verification Rationale <span style={{ color: "#ef4444" }}>*</span></span>
+                        </div>
+                        <textarea
+                          value={comment}
+                          onChange={(e) => setComment(e.target.value)}
+                          placeholder="Please provide a clear and concise reason/comment to support your decision..."
+                          rows={3}
+                          style={{
+                            width: "100%",
+                            backgroundColor: "#050a11",
+                            border: "1px solid #1e2530",
+                            borderRadius: "8px",
+                            padding: "12px",
+                            fontSize: "14px",
+                            color: "#c9d4e0",
+                            outline: "none",
+                            resize: "none"
+                          }}
+                        />
+                      </div>
+                      
+                      <div className="cf-modal-buttons" style={{ display: "flex", gap: "12px" }}>
+                        <button 
+                          onClick={() => handleReview(selectedReport.reportId, 'approve')}
+                          disabled={!comment.trim() || !!actionLoading}
+                          style={{
+                            flex: 1,
+                            padding: "12px",
+                            backgroundColor: "#064e3b",
+                            border: "none",
+                            borderRadius: "6px",
+                            color: "#6ee7b7",
+                            fontWeight: 600,
+                            cursor: comment.trim() ? "pointer" : "not-allowed",
+                            opacity: (actionLoading || !comment.trim()) ? 0.4 : 1
+                          }}
+                        >
+                          {actionLoading === selectedReport.reportId ? "Processing..." : "Agree - Flag as Cheater"}
+                        </button>
+                        <button 
+                          onClick={() => handleReview(selectedReport.reportId, 'reject')}
+                          disabled={!comment.trim() || !!actionLoading}
+                          style={{
+                            flex: 1,
+                            padding: "12px",
+                            backgroundColor: "#7f1d1d",
+                            border: "none",
+                            borderRadius: "6px",
+                            color: "#fca5a5",
+                            fontWeight: 600,
+                            cursor: comment.trim() ? "pointer" : "not-allowed",
+                            opacity: (actionLoading || !comment.trim()) ? 0.4 : 1
+                          }}
+                        >
+                          Reject Claim
+                        </button>
+                      </div>
                     </div>
                   ) : (
                     <div style={{ marginTop: "24px", padding: "16px", backgroundColor: "rgba(59, 130, 246, 0.05)", borderRadius: "6px", border: "1px solid rgba(59, 130, 246, 0.2)" }}>

@@ -73,6 +73,7 @@ export type ReportData = {
   description: string;
   evidenceImage?: string;
   status: 'pending' | 'reviewed' | 'resolved';
+  moderatorComment?: string;
 };
 
 export type PaginatedReports = {

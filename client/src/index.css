@@ -40,3 +40,18 @@ input::-webkit-credentials-auto-fill-button {
 input[type="password"]::-webkit-reveal-button {
   display: none !important;
 }
+
+/* Premium global button micro-interactions (excluding Navbar elements) */
+button:not(nav *):not([disabled]) {
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+button:not(nav *):not([disabled]):hover {
+  transform: translateY(-1px);
+  filter: brightness(1.07);
+  box-shadow: 0 4px 10px rgba(159, 202, 255, 0.11);
+}
+
+button:not(nav *):not([disabled]):active {
+  transform: translateY(0.3px);
+}
