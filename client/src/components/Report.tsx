@@ -21,6 +21,17 @@ export default function Report() {
 
   const [showAuthPrompt, setShowAuthPrompt] = useState(false);
 
+  const handleReset = () => {
+    setSuspectHandle("");
+    setContestId("");
+    setProblemId("");
+    setReason("Code Similarity");
+    setDescription("");
+    setError("");
+    setFile(null);
+    setSuccess(false);
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!isLoggedIn) {
@@ -33,6 +44,52 @@ export default function Report() {
     setError("");
 
     try {
+      // 1. Verify suspect handle exists on Codeforces
+      const userRes = await fetch(`https://codeforces.com/api/user.info?handles=${encodeURIComponent(suspectHandle.trim())}`);
+      const userData = await userRes.json();
+      if (userData.status === "FAILED") {
+        throw new Error(`Codeforces handle "${suspectHandle}" does not exist.`);
+      }
+
+      // 2. Verify contest exists on Codeforces (using anonymous standings query with no extra parameters to comply with CF API limits)
+      const standingsRes = await fetch(`https://codeforces.com/api/contest.standings?contestId=${encodeURIComponent(contestId.trim())}`);
+      const standingsData = await standingsRes.json();
+      
+      if (standingsData.status === "FAILED") {
+        if (standingsData.comment && standingsData.comment.includes("not found")) {
+          throw new Error(`Contest ID "${contestId}" does not exist on Codeforces.`);
+        } else {
+          throw new Error(standingsData.comment || `Failed to verify Contest ID "${contestId}".`);
+        }
+      }
+
+      // 3. Verify problem ID exists in this contest (case-insensitively)
+      const problems = standingsData.result.problems || [];
+      const problemExists = problems.some(
+        (prob: any) => prob.index.toLowerCase() === problemId.trim().toLowerCase()
+      );
+      
+      if (!problemExists) {
+        const validIndexes = problems.map((prob: any) => prob.index).join(", ");
+        throw new Error(
+          `Problem "${problemId}" does not exist in Contest ${contestId}. Valid problem IDs are: ${validIndexes}`
+        );
+      }
+
+      // 4. Verify suspect participated (made submissions) in that specific contest
+      const statusRes = await fetch(`https://codeforces.com/api/user.status?handle=${encodeURIComponent(suspectHandle.trim())}`);
+      const statusData = await statusRes.json();
+      if (statusData.status === "FAILED") {
+        throw new Error(statusData.comment || `Failed to fetch submissions for user "${suspectHandle}".`);
+      }
+
+      const submissions = statusData.result || [];
+      const hasSubmitted = submissions.some((sub: any) => sub.contestId === Number(contestId.trim()));
+      
+      if (!hasSubmitted) {
+        throw new Error(`User "${suspectHandle}" did not submit any solutions in Contest ${contestId}.`);
+      }
+
       const formData = new FormData();
       formData.append('reportId', `REP-${Date.now()}`);
       formData.append('reporterHandle', user?.handle || "anonymous");
@@ -68,12 +125,20 @@ export default function Report() {
           <p className="text-gray-400 text-center max-w-md px-6">
             Thank you for helping maintain community integrity. Your report has been logged and is awaiting peer review.
           </p>
-          <button 
-            onClick={() => navigate("/")}
-            className="mt-8 px-6 py-2 bg-[#1e293b] border border-[#334155] rounded text-sm hover:bg-[#334155] transition-colors"
-          >
-            Return to Home
-          </button>
+          <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center items-center">
+            <button 
+              onClick={() => navigate("/")}
+              className="px-6 py-2.5 bg-[#1e293b] border border-[#334155] rounded text-sm hover:bg-[#334155] transition-colors text-white font-medium"
+            >
+              Return to Home
+            </button>
+            <button 
+              onClick={handleReset}
+              className="px-6 py-2.5 bg-blue-600 border border-blue-500 rounded text-sm hover:bg-blue-500 transition-colors text-white font-medium shadow-lg"
+            >
+              Submit New Report
+            </button>
+          </div>
         </div>
         <Footer />
       </div>
