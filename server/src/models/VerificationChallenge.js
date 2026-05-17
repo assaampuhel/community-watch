@@ -8,7 +8,5 @@ const verificationChallengeSchema = new mongoose.Schema({
   createdAt: { type: Date, default: Date.now, expires: 900 } // Expires in 15 minutes (900 seconds)
 }, { timestamps: true });
 
-// Add index explicitly for TTL just in case
-verificationChallengeSchema.index({ createdAt: 1 }, { expireAfterSeconds: 900 });
-
+// Add index will be handled automatically by inline expires property
 export default mongoose.models.VerificationChallenge || mongoose.model('VerificationChallenge', verificationChallengeSchema);
