@@ -5,6 +5,7 @@ import { useAuth } from "../context/AuthContext";
 function Navbar() {
   const { isLoggedIn, user, logout, isModerator } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
+  const [showConfirmLogout, setShowConfirmLogout] = useState(false);
 
   const toggleMenu = () => setIsOpen(!isOpen);
   const closeMenu = () => setIsOpen(false);
@@ -43,8 +44,8 @@ function Navbar() {
                 {isModerator && <span className="text-[10px] text-orange-400 font-mono uppercase tracking-tighter">Moderator</span>}
               </div>
               <button 
-                onClick={logout}
-                className="text-xs font-bold text-[#ffb4ab] border border-[#ffb4ab]/30 px-3 py-1.5 rounded hover:bg-[#ffb4ab]/10 transition-colors"
+                onClick={() => setShowConfirmLogout(true)}
+                className="text-xs font-bold text-[#ffb4ab] border border-[#ffb4ab]/30 px-3 py-1.5 rounded hover:bg-[#ffb4ab]/10 transition-colors cursor-pointer"
               >
                 Log Out
               </button>
@@ -133,8 +134,8 @@ function Navbar() {
                   {isModerator && <span className="text-[10px] text-orange-400 font-mono uppercase tracking-tighter mt-0.5">Moderator</span>}
                 </div>
                 <button 
-                  onClick={() => { logout(); closeMenu(); }}
-                  className="text-xs font-bold text-[#ffb4ab] border border-[#ffb4ab]/30 px-3 py-1.5 rounded hover:bg-[#ffb4ab]/10 transition-colors"
+                  onClick={() => { setShowConfirmLogout(true); closeMenu(); }}
+                  className="text-xs font-bold text-[#ffb4ab] border border-[#ffb4ab]/30 px-3 py-1.5 rounded hover:bg-[#ffb4ab]/10 transition-colors cursor-pointer"
                 >
                   Log Out
                 </button>
@@ -156,6 +157,64 @@ function Navbar() {
           )}
         </div>
       </div>
+
+      {showConfirmLogout && (
+        <>
+          <style>{`
+            @keyframes fade-in {
+              0% { opacity: 0; }
+              100% { opacity: 1; }
+            }
+            @keyframes scale-up {
+              0% { transform: scale(0.95); opacity: 0; }
+              100% { transform: scale(1); opacity: 1; }
+            }
+            .anim-fade-in {
+              animation: fade-in 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            }
+            .anim-scale-up {
+              animation: scale-up 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            }
+          `}</style>
+          <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-[9999] p-4 backdrop-blur-sm anim-fade-in">
+            <div className="bg-[#0b121d] border border-[#1e2530] rounded-xl w-full max-w-md overflow-hidden shadow-2xl p-6 sm:p-8 anim-scale-up">
+              <div className="flex items-center gap-4 mb-4">
+                <div className="w-10 h-10 rounded-full bg-red-500/10 flex items-center justify-center text-red-400 border border-red-500/20">
+                  <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
+                  </svg>
+                </div>
+                <div>
+                  <h3 className="text-lg font-bold text-white">Confirm Sign Out</h3>
+                  <p className="text-xs font-mono text-[#55667a] uppercase tracking-wider">Session Termination</p>
+                </div>
+              </div>
+              
+              <p className="text-sm text-[#8a9ab0] mb-6 leading-relaxed font-sans">
+                Are you sure you want to sign out of CF Community Watch? You will need to re-authenticate with your Codeforces handle to participate in report moderation.
+              </p>
+              
+              <div className="flex flex-col sm:flex-row gap-3 justify-end pt-2">
+                <button
+                  onClick={() => setShowConfirmLogout(false)}
+                  className="w-full sm:w-auto px-5 py-2.5 bg-[#1e293b] text-white text-xs font-semibold rounded hover:bg-[#2d3a4f] transition-all cursor-pointer border border-[#334155]/30"
+                >
+                  Stay Back
+                </button>
+                <button
+                  onClick={() => {
+                    setShowConfirmLogout(false);
+                    logout();
+                  }}
+                  className="w-full sm:w-auto px-5 py-2.5 bg-[#7f1d1d] text-[#fca5a5] text-xs font-semibold rounded hover:bg-[#991b1b] transition-all cursor-pointer border border-red-900/30"
+                >
+                  Sign Out
+                </button>
+              </div>
+            </div>
+          </div>
+        </>
+      )}
     </nav>
   );
 }

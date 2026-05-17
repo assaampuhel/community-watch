@@ -15,6 +15,7 @@ export default function Authform() {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [successUser, setSuccessUser] = useState<string | null>(null);
 
   useEffect(() => {
     const mode = searchParams.get('mode');
@@ -37,10 +38,12 @@ export default function Authform() {
       }
       
       login(response.token, response.user);
-      navigate('/');
+      setSuccessUser(response.user.handle);
+      setTimeout(() => {
+        navigate('/');
+      }, 2000);
     } catch (err: any) {
       setError(err.message || 'Authentication failed');
-    } finally {
       setLoading(false);
     }
   };
@@ -162,6 +165,66 @@ export default function Authform() {
           </div>
         )}
       </div>
+
+      {successUser && (
+        <>
+          <style>{`
+            @keyframes radar-scan {
+              0% { transform: rotate(0deg); }
+              100% { transform: rotate(360deg); }
+            }
+            @keyframes shield-bounce {
+              0% { transform: scale(0.3); opacity: 0; }
+              50% { transform: scale(1.1); }
+              70% { transform: scale(0.95); }
+              100% { transform: scale(1); opacity: 1; }
+            }
+            @keyframes text-pulse {
+              0%, 100% { opacity: 0.6; }
+              50% { opacity: 1; }
+            }
+            .radar-ring {
+              animation: radar-scan 4s linear infinite;
+            }
+            .shield-icon {
+              animation: shield-bounce 0.65s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            }
+            .pulse-text {
+              animation: text-pulse 1.5s ease-in-out infinite;
+            }
+          `}</style>
+          <div className="fixed inset-0 bg-[#050a11]/95 z-[9999] backdrop-blur-xl flex flex-col items-center justify-center p-4">
+            {/* Concentric Rotating Radar Rings */}
+            <div className="relative w-40 h-40 flex items-center justify-center mb-8">
+              {/* Outer Ring */}
+              <div className="absolute inset-0 border border-blue-500/20 rounded-full radar-ring"></div>
+              {/* Middle Scanning Arc */}
+              <div className="absolute inset-2 border-t-2 border-r-2 border-blue-500/60 border-l border-b border-transparent rounded-full radar-ring"></div>
+              {/* Inner Glowing Core */}
+              <div className="absolute inset-8 bg-blue-500/5 rounded-full border border-blue-400/30 flex items-center justify-center shadow-lg shadow-blue-500/10">
+                <svg className="w-10 h-10 text-[#a5c9ff] shield-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                </svg>
+              </div>
+            </div>
+
+            {/* Futuristic Terminal Text */}
+            <div className="text-center font-mono max-w-sm">
+              <p className="text-emerald-400 text-xs font-bold uppercase tracking-[0.25em] mb-2 pulse-text">
+                [ ACCESS GRANTED ]
+              </p>
+              <h2 className="text-2xl font-bold text-white mb-3">
+                Welcome back, {successUser}
+              </h2>
+              <div className="text-xs text-[#55667a] flex flex-col gap-1 border-t border-[#1e2530]/50 pt-3">
+                <p className="pulse-text">🔐 Cryptographic handshake: SECURE</p>
+                <p className="delay-100">📡 Synapse Link: Synchronized</p>
+                <p className="text-[#a5c9ff] mt-2 animate-pulse">Initializing Sentinel terminal...</p>
+              </div>
+            </div>
+          </div>
+        </>
+      )}
     </div>
   );
 }
