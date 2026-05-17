@@ -56,6 +56,26 @@ export async function apiRegister(handle: string, email: string, password: strin
   });
 }
 
+export type ChallengeResponse = {
+  message: string;
+  token: string;
+  expiresAt: string;
+};
+
+export async function apiSignupChallenge(handle: string, email: string, password: string): Promise<ChallengeResponse> {
+  return apiFetch('/auth/signup-challenge', {
+    method: 'POST',
+    body: { handle, email, password },
+  });
+}
+
+export async function apiSignupVerify(handle: string): Promise<AuthResponse> {
+  return apiFetch('/auth/signup-verify', {
+    method: 'POST',
+    body: { handle },
+  });
+}
+
 export async function apiLogin(handle: string, password: string): Promise<AuthResponse> {
   return apiFetch('/auth/login', {
     method: 'POST',
