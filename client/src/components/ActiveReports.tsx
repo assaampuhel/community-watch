@@ -129,49 +129,27 @@ export default function ActiveReports() {
 
           {/* Identity Verification Alert */}
           {!isLoggedIn && (
-            <div className="cf-alert-card" style={{
-              backgroundColor: "#0b121d",
-              border: "1px solid #1e2530",
-              borderRadius: "8px",
-              padding: "32px",
-              marginBottom: "40px",
-              display: "flex",
-              gap: "24px"
-            }}>
-              <div style={{ flexShrink: 0 }}>
+            <div className="bg-[#0b121d] border border-[#1e2530] rounded-lg p-6 sm:p-8 mb-10 flex flex-col sm:flex-row gap-6 items-start">
+              <div className="flex-shrink-0 mx-auto sm:mx-0">
                 <div style={{ padding: "10px", backgroundColor: "rgba(217, 119, 6, 0.1)", borderRadius: "8px" }}>
                   <AlertShield />
                 </div>
               </div>
-              <div style={{ flex: 1 }}>
-                <h2 style={{ fontSize: "20px", fontWeight: 600, color: "#fff", marginBottom: "8px" }}>Identity Verification Required</h2>
-                <p style={{ color: "#8a9ab0", fontSize: "14px", lineHeight: "1.6", marginBottom: "24px", maxWidth: "700px" }}>
+              <div className="flex-1 text-center sm:text-left w-full">
+                <h2 className="text-lg sm:text-xl font-semibold text-white mb-2">Identity Verification Required</h2>
+                <p className="text-[#8a9ab0] text-sm leading-relaxed mb-6 max-w-3xl">
                   To access sensitive evidence, you must verify your Codeforces identity. Sign in with your 1500+ rated account to participate in moderation.
                 </p>
-                <div style={{ display: "flex", gap: "12px", flexWrap: "wrap" }}>
-                  <NavLink to="/auth?mode=signin">
-                    <button style={{
-                      padding: "8px 20px",
-                      background: "transparent",
-                      border: "1px solid #334155",
-                      borderRadius: "4px",
-                      color: "#c9d4e0",
-                      fontSize: "13px",
-                      fontWeight: 600,
-                      cursor: "pointer"
-                    }}>Sign In</button>
+                <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto justify-center sm:justify-start">
+                  <NavLink to="/auth?mode=signin" className="w-full sm:w-auto">
+                    <button className="w-full sm:w-auto px-6 py-2.5 bg-transparent border border-[#334155] rounded text-sm text-[#c9d4e0] hover:text-white hover:bg-[#334155]/20 transition-all font-medium cursor-pointer">
+                      Sign In
+                    </button>
                   </NavLink>
-                  <NavLink to="/auth?mode=signup">
-                    <button style={{
-                      padding: "8px 20px",
-                      background: "#1e293b",
-                      border: "1px solid #334155",
-                      borderRadius: "4px",
-                      color: "#fff",
-                      fontSize: "13px",
-                      fontWeight: 600,
-                      cursor: "pointer"
-                    }}>Sign Up</button>
+                  <NavLink to="/auth?mode=signup" className="w-full sm:w-auto">
+                    <button className="w-full sm:w-auto px-6 py-2.5 bg-[#1e293b] border border-[#334155] rounded text-sm text-white hover:bg-[#334155] transition-all font-medium cursor-pointer">
+                      Sign Up
+                    </button>
                   </NavLink>
                 </div>
               </div>

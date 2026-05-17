@@ -78,7 +78,7 @@ export default function CheaterDB() {
                 <th className="px-6 py-4 text-[11px] text-[#55667a] uppercase">Prob</th>
                 <th className="px-6 py-4 text-[11px] text-[#55667a] uppercase">Reason</th>
                 <th className="px-6 py-4 text-[11px] text-[#55667a] uppercase">Status</th>
-                <th className="px-6 py-4 text-[11px] text-[#55667a] uppercase text-right">Evidence</th>
+                <th className="px-6 py-4 text-[11px] text-[#55667a] uppercase">Evidence</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-[#1e2530]">
@@ -108,15 +108,12 @@ export default function CheaterDB() {
                             : report.status}
                       </span>
                     </td>
-                    <td className="px-6 py-4 text-right">
+                    <td className="px-6 py-4">
                       <button 
                         onClick={() => setSelectedReport(report)}
-                        className="text-[#55667a] hover:text-[#a5c9ff] transition-colors"
+                        className="px-3.5 py-1.5 bg-[#1a2333] border border-[#2e3d50] rounded text-xs font-semibold text-[#c9d4e0] hover:text-white hover:bg-[#253247] hover:border-[#425770] transition-all cursor-pointer shadow-sm"
                       >
-                        <svg className="w-5 h-5 inline" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                        </svg>
+                        View
                       </button>
                     </td>
                   </tr>
