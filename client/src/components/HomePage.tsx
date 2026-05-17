@@ -7,16 +7,17 @@ const responsiveStyles = `
     .cf-nav-links { display: none !important; }
     .cf-nav-buttons { gap: 8px !important; }
     .cf-nav-buttons button { padding: 5px 12px !important; font-size: 13px !important; }
-    .cf-stats-grid { grid-template-columns: 1fr !important; }
-    .cf-nav-btns-row { flex-direction: column !important; align-items: stretch !important; }
-    .cf-nav-btns-row button { justify-content: center; }
-    .cf-action-row { flex-direction: column !important; align-items: stretch !important; }
-    .cf-action-row button { justify-content: center; }
+    .cf-stats-grid { grid-template-columns: 1fr !important; gap: 12px !important; }
+    .cf-nav-btns-row { flex-direction: column !important; align-items: stretch !important; gap: 10px !important; width: 100% !important; max-width: 320px !important; margin-left: auto !important; margin-right: auto !important; }
+    .cf-nav-btns-row a { justify-content: center !important; text-align: center !important; width: 100% !important; box-sizing: border-box !important; }
+    .cf-action-row { flex-direction: column !important; align-items: stretch !important; width: 100% !important; max-width: 320px !important; margin-left: auto !important; margin-right: auto !important; }
+    .cf-action-row a { width: 100% !important; }
+    .cf-action-row button { justify-content: center !important; width: 100% !important; box-sizing: border-box !important; }
     .cf-footer { flex-direction: column !important; align-items: flex-start !important; }
     .cf-footer-links { flex-wrap: wrap !important; gap: 12px !important; }
-    .cf-hero { padding-top: 48px !important; padding-bottom: 40px !important; }
-    .cf-h1 { font-size: 26px !important; }
-    .cf-review-section { margin: 0 16px 40px !important; padding: 40px 16px !important; }
+    .cf-hero { padding-top: 40px !important; padding-bottom: 32px !important; }
+    .cf-h1 { font-size: 28px !important; }
+    .cf-review-section { margin: 0 16px 40px !important; padding: 32px 16px !important; }
   }
 
   @media (min-width: 641px) and (max-width: 900px) {
@@ -296,7 +297,7 @@ function HomePage() {
           {/* Stats */}
           <div className="cf-stats-grid" style={{
             display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
+            gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
             gap: "16px",
             width: "100%",
             maxWidth: "1000px",

@@ -24,7 +24,7 @@ export const signup = async (req, res) => {
     const rating = cfUser.rating || 0;
     const avatar = cfUser.titlePhoto;
 
-    // 3. Assign role based on rating (Moderator if rating > 1500)
+    // 3. Assign role based on rating (Moderator if rating >= 1500)
     const role = rating >= 1500 ? 'moderator' : 'user';
 
     // 4. Hash password

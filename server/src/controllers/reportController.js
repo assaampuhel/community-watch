@@ -55,7 +55,13 @@ export const getReports = async (req, res) => {
     const { status, contestId, problemId, reporterHandle, suspectHandle, search } = req.query;
     const filter = {};
 
-    if (status) filter.status = status;
+    if (status) {
+      if (status.includes(',')) {
+        filter.status = { $in: status.split(',') };
+      } else {
+        filter.status = status;
+      }
+    }
     if (contestId) filter.contestId = contestId;
     if (problemId) filter.problemId = problemId;
     if (reporterHandle) filter.reporterHandle = reporterHandle;

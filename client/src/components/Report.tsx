@@ -87,7 +87,7 @@ export default function Report() {
         
         {/* Page Header */}
         <div className="mb-8">
-          <h1 className="text-3xl font-bold mb-2">Report Misconduct</h1>
+          <h1 className="text-2xl sm:text-3xl font-bold text-white mb-2">Report Misconduct</h1>
           <p className="text-gray-400 text-sm max-w-3xl leading-relaxed">
             Submit objective evidence of competitive programming rules violations for peer review. All reports are logged and subject to moderator audit.
           </p>
@@ -254,17 +254,17 @@ export default function Report() {
               )}
 
               {/* Action Buttons */}
-              <div className="flex justify-end gap-4 mt-8 pt-6 border-t border-[#334155]">
+              <div className="flex flex-col-reverse sm:flex-row justify-end gap-3 sm:gap-4 mt-8 pt-6 border-t border-[#334155]">
                 <button 
                   type="button"
                   onClick={() => navigate("/")}
-                  className="px-6 py-2 rounded text-sm font-medium text-gray-300 hover:text-white border border-[#334155] hover:bg-[#334155]/50 transition-colors">
+                  className="w-full sm:w-auto px-6 py-2.5 rounded text-sm font-medium text-gray-300 hover:text-white border border-[#334155] hover:bg-[#334155]/50 transition-colors text-center justify-center flex">
                   Cancel
                 </button>
                 <button 
                   type="submit"
                   disabled={loading}
-                  className="px-6 py-2 rounded text-sm font-medium bg-[#9fcaff] text-[#003259] hover:bg-[#d2e4ff] transition-colors flex items-center gap-2 shadow-lg shadow-[#9fcaff]/20"
+                  className="w-full sm:w-auto px-6 py-2.5 rounded text-sm font-medium bg-[#9fcaff] text-[#003259] hover:bg-[#d2e4ff] transition-colors flex items-center justify-center gap-2 shadow-lg shadow-[#9fcaff]/20"
                 >
                   {loading ? (
                     "Submitting..."

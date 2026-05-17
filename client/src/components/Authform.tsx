@@ -57,7 +57,7 @@ export default function Authform() {
         </p>
       </div>
 
-      <div className="bg-[#0b121d] border border-[#1e2530] w-full max-w-md rounded-lg p-8 shadow-2xl relative">
+      <div className="bg-[#0b121d] border border-[#1e2530] w-full max-w-md rounded-lg p-6 sm:p-8 shadow-2xl relative">
         
         <div className="flex w-full mb-8 rounded overflow-hidden bg-[#151b25]">
           <button 

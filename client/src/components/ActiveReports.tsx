@@ -19,9 +19,18 @@ const responsiveStyles = `
     .cf-hero { padding-top: 48px !important; padding-bottom: 40px !important; }
     .cf-h1 { font-size: 26px !important; }
     .cf-review-section { margin: 0 16px 40px !important; padding: 40px 16px !important; }
-    /* Table Mobile Adjustments */
-    .cf-table-container { overflow-x: auto; }
-    .cf-table { min-width: 600px; }
+    
+    /* Active Reports custom mobile rules */
+    .cf-alert-card { flex-direction: column !important; gap: 16px !important; text-align: center !important; padding: 24px 16px !important; }
+    .cf-alert-card > div { display: flex; justify-content: center; width: 100%; }
+    .cf-alert-card button { width: 100% !important; margin-bottom: 8px; }
+    
+    .cf-modal-grid { grid-template-columns: 1fr !important; gap: 16px !important; }
+    .cf-modal-buttons { flex-direction: column !important; gap: 10px !important; }
+    .cf-modal-buttons button { width: 100% !important; padding: 14px !important; }
+    
+    .cf-table-container { overflow-x: auto !important; -webkit-overflow-scrolling: touch; }
+    .cf-table { min-width: 500px !important; }
   }
 
   @media (min-width: 641px) and (max-width: 900px) {
@@ -75,19 +84,7 @@ export default function ActiveReports() {
         comment: decision === 'approve' ? 'Approved by moderator' : 'Rejected by moderator',
       });
 
-      // 2. Update the report status to move it out of pending
-      // 'reviewed' will move it to the Cheater DB
-      await createReview({ // Wait, I should use updateReportStatus API
-        reportId,
-        status: decision === 'approve' ? 'reviewed' : 'resolved' 
-      } as any); 
-      // Actually, I'll use the proper API if available. 
-      // Let's check api.ts again.
-      
-      // I'll just use a direct fetch or fix handleReview to use updateReportStatus
-      // For now, I'll assume createReview on the backend handles status update or I'll call both.
-      
-      // Let's use a simpler approach: update the status via the dedicated endpoint
+      // 2. Update the report status to move it out of pending (using the dedicated endpoint)
       await fetch(`${import.meta.env.VITE_API_URL || 'http://127.0.0.1:3000/api'}/reports/${reportId}/status`, {
         method: 'PATCH',
         headers: {
@@ -122,9 +119,17 @@ export default function ActiveReports() {
         {/* Main Content */}
         <main style={{ padding: "40px 24px 0px 24px", maxWidth: "1200px", margin: "0 auto", width: "100%" }}>
           
+          {/* Page Header */}
+          <div style={{ marginBottom: "32px" }}>
+            <h1 className="text-2xl sm:text-3xl font-bold text-white mb-2">Active Reports</h1>
+            <p style={{ color: "#8a9ab0", fontSize: "14px", lineHeight: "1.6", margin: 0, maxWidth: "700px" }}>
+              Help moderate and maintain community integrity by peer-reviewing pending contest violation reports.
+            </p>
+          </div>
+
           {/* Identity Verification Alert */}
           {!isLoggedIn && (
-            <div style={{
+            <div className="cf-alert-card" style={{
               backgroundColor: "#0b121d",
               border: "1px solid #1e2530",
               borderRadius: "8px",
@@ -213,7 +218,7 @@ export default function ActiveReports() {
               <table className="cf-table" style={{ width: "100%", borderCollapse: "collapse", textAlign: "left" }}>
                 <thead>
                   <tr style={{ borderBottom: "1px solid #1e2530" }}>
-                    <th style={{ padding: "16px 24px", fontSize: "12px", color: "#55667a", textTransform: "uppercase" }}>Target Handle</th>
+                    <th style={{ padding: "16px 24px", fontSize: "12px", color: "#55667a", textTransform: "uppercase" }}>Suspect Handle</th>
                     <th style={{ padding: "16px 24px", fontSize: "12px", color: "#55667a", textTransform: "uppercase" }}>Contest ID</th>
                     <th style={{ padding: "16px 24px", fontSize: "12px", color: "#55667a", textTransform: "uppercase" }}>Problem</th>
                     <th style={{ padding: "16px 24px", fontSize: "12px", color: "#55667a", textTransform: "uppercase", textAlign: "right" }}>Action</th>
@@ -278,7 +283,7 @@ export default function ActiveReports() {
                 </div>
                 
                 <div style={{ padding: "24px" }}>
-                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "24px", marginBottom: "24px" }}>
+                  <div className="cf-modal-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "24px", marginBottom: "24px" }}>
                     <div>
                       <div style={{ fontSize: "11px", color: "#55667a", textTransform: "uppercase", marginBottom: "4px" }}>Suspect Handle</div>
                       <div style={{ color: "#a5c9ff", fontWeight: 600 }}>{selectedReport.suspectHandle}</div>
@@ -323,7 +328,7 @@ export default function ActiveReports() {
                   )}
 
                   {isModerator ? (
-                    <div style={{ display: "flex", gap: "12px", marginTop: "32px", paddingTop: "24px", borderTop: "1px solid #1e2530" }}>
+                    <div className="cf-modal-buttons" style={{ display: "flex", gap: "12px", marginTop: "32px", paddingTop: "24px", borderTop: "1px solid #1e2530" }}>
                       <button 
                         onClick={() => handleReview(selectedReport.reportId, 'approve')}
                         disabled={!!actionLoading}
