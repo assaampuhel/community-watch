@@ -53,10 +53,10 @@ export default function CheaterDB() {
   const displayedReports = reports.slice(startIndex, startIndex + itemsPerPage);
 
   return (
-    <div className="min-h-screen bg-[#050a11] text-[#c9d4e0] font-sans flex flex-col">
-      <div className="bg-[#050a11] border-b border-[#1e2530] py-12 sm:py-16 px-4 sm:px-6 text-center">
-        <h1 className="text-2xl sm:text-3xl font-bold text-white mb-2">Public Cheater Database</h1>
-        <p className="text-sm text-[#8a9ab0] max-w-2xl mx-auto mb-6 sm:mb-8 leading-relaxed">
+    <div className="min-h-screen bg-background text-text-main font-sans flex flex-col transition-colors duration-300">
+      <div className="bg-background border-b border-surface-border py-12 sm:py-16 px-4 sm:px-6 text-center transition-colors duration-300">
+        <h1 className="text-2xl sm:text-3xl font-bold text-text-main mb-2">Public Cheater Database</h1>
+        <p className="text-sm text-text-muted max-w-2xl mx-auto mb-6 sm:mb-8 leading-relaxed">
           A clinical, transparent record of verified cheating incidents across competitive programming platforms.
         </p>
         
@@ -66,7 +66,7 @@ export default function CheaterDB() {
             placeholder="Search by CF handle or reason..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full bg-[#0b121d] border border-[#2e3d50] rounded-lg py-3 px-12 text-sm outline-none focus:border-[#a5c9ff] transition-all"
+            className="w-full bg-surface-dim border border-surface-border rounded-lg py-3 px-12 text-sm outline-none focus:border-primary text-text-main transition-all"
           />
           <span className="absolute left-4 top-4"><SearchIcon /></span>
         </div>
@@ -74,35 +74,35 @@ export default function CheaterDB() {
 
       <main className="px-4 sm:px-8 pt-8 pb-4 max-w-6xl mx-auto w-full">
         <div className="flex justify-between items-center mb-6">
-          <h3 className="text-xs font-bold text-[#55667a] uppercase tracking-widest">
+          <h3 className="text-xs font-bold text-text-label uppercase tracking-widest">
             Verified Records ({total})
           </h3>
         </div>
 
-        <div className="bg-[#0b121d] border border-[#1e2530] rounded-lg overflow-hidden shadow-2xl overflow-x-auto -webkit-overflow-scrolling-touch">
+        <div className="bg-surface border border-surface-border rounded-lg overflow-hidden shadow-2xl overflow-x-auto -webkit-overflow-scrolling-touch transition-colors duration-300">
           <table className="w-full text-left min-w-[600px]">
             <thead>
-              <tr className="bg-[#080f19] border-b border-[#1e2530]">
-                <th className="px-6 py-4 text-[11px] text-[#55667a] uppercase">Handle</th>
-                <th className="px-6 py-4 text-[11px] text-[#55667a] uppercase">Contest</th>
-                <th className="px-6 py-4 text-[11px] text-[#55667a] uppercase">Prob</th>
-                <th className="px-6 py-4 text-[11px] text-[#55667a] uppercase">Reason</th>
-                <th className="px-6 py-4 text-[11px] text-[#55667a] uppercase">Status</th>
-                <th className="px-6 py-4 text-[11px] text-[#55667a] uppercase">Evidence</th>
+              <tr className="bg-surface-dim border-b border-surface-border">
+                <th className="px-6 py-4 text-[11px] text-text-label uppercase">Handle</th>
+                <th className="px-6 py-4 text-[11px] text-text-label uppercase">Contest</th>
+                <th className="px-6 py-4 text-[11px] text-text-label uppercase">Prob</th>
+                <th className="px-6 py-4 text-[11px] text-text-label uppercase">Reason</th>
+                <th className="px-6 py-4 text-[11px] text-text-label uppercase">Status</th>
+                <th className="px-6 py-4 text-[11px] text-text-label uppercase">Evidence</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-[#1e2530]">
+            <tbody className="divide-y divide-surface-border">
               {loading ? (
-                <tr><td colSpan={6} className="px-6 py-10 text-center text-[#55667a]">Updating records...</td></tr>
+                <tr><td colSpan={6} className="px-6 py-10 text-center text-text-label">Updating records...</td></tr>
               ) : reports.length === 0 ? (
-                <tr><td colSpan={6} className="px-6 py-10 text-center text-[#55667a]">No verified records found matching your search.</td></tr>
+                <tr><td colSpan={6} className="px-6 py-10 text-center text-text-label">No verified records found matching your search.</td></tr>
               ) : (
                 displayedReports.map((report) => (
-                  <tr key={report.reportId} className="hover:bg-[#0d1520] transition-colors">
-                    <td className="px-6 py-4 font-mono text-[#a5c9ff] text-sm">{report.suspectHandle}</td>
-                    <td className="px-6 py-4 text-sm text-[#fff] font-medium">{report.contestId}</td>
-                    <td className="px-6 py-4 text-sm text-[#8a9ab0]">{report.problemId}</td>
-                    <td className="px-6 py-4 text-sm text-[#8a9ab0]">{report.reason}</td>
+                  <tr key={report.reportId} className="hover:bg-surface-dim transition-colors">
+                    <td className="px-6 py-4 font-mono text-primary text-sm">{report.suspectHandle}</td>
+                    <td className="px-6 py-4 text-sm text-text-main font-medium">{report.contestId}</td>
+                    <td className="px-6 py-4 text-sm text-text-muted">{report.problemId}</td>
+                    <td className="px-6 py-4 text-sm text-text-muted">{report.reason}</td>
                     <td className="px-6 py-4">
                       <span className={`px-2.5 py-1 rounded-[3px] text-[10px] font-bold uppercase tracking-wider ${
                         report.status === 'resolved' 
@@ -121,7 +121,7 @@ export default function CheaterDB() {
                     <td className="px-6 py-4">
                       <button 
                         onClick={() => setSelectedReport(report)}
-                        className="px-3.5 py-1.5 bg-[#1a2333] border border-[#2e3d50] rounded text-xs font-semibold text-[#c9d4e0] hover:text-white hover:bg-[#253247] hover:border-[#425770] transition-all cursor-pointer shadow-sm"
+                        className="px-3.5 py-1.5 bg-surface-dim border border-surface-border rounded text-xs font-semibold text-text-main hover:text-white hover:bg-surface hover:border-primary transition-all cursor-pointer shadow-sm"
                       >
                         View
                       </button>
@@ -135,20 +135,20 @@ export default function CheaterDB() {
 
         {/* Premium Pagination Controls */}
         {totalPages > 1 && (
-          <div className="flex flex-col sm:flex-row justify-between items-center gap-4 mt-6 px-2 py-4 border-t border-[#1e2530]/30 animate-fade-in">
-            <span className="text-xs text-[#55667a] text-center sm:text-left">
-              Showing <span className="text-[#a5c9ff] font-medium">{startIndex + 1}</span> to{" "}
-              <span className="text-[#a5c9ff] font-medium">
+          <div className="flex flex-col sm:flex-row justify-between items-center gap-4 mt-6 px-2 py-4 border-t border-surface-border/30 animate-fade-in transition-colors duration-300">
+            <span className="text-xs text-text-label text-center sm:text-left">
+              Showing <span className="text-primary font-medium">{startIndex + 1}</span> to{" "}
+              <span className="text-primary font-medium">
                 {Math.min(startIndex + itemsPerPage, reports.length)}
               </span>{" "}
-              of <span className="text-[#a5c9ff] font-medium">{reports.length}</span> records
+              of <span className="text-primary font-medium">{reports.length}</span> records
             </span>
             <div className="flex items-center gap-1.5 flex-wrap justify-center">
               {/* Prev Button */}
               <button
                 onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
                 disabled={currentPage === 1}
-                className="px-3 py-1.5 bg-[#0b121d] border border-[#1e2530] text-xs font-semibold rounded text-[#c9d4e0] hover:bg-[#1a2333] hover:border-[#2e3d50] hover:text-white disabled:opacity-40 disabled:hover:bg-[#0b121d] disabled:hover:border-[#1e2530] disabled:hover:text-[#c9d4e0] disabled:cursor-not-allowed transition-all cursor-pointer"
+                className="px-3 py-1.5 bg-surface border border-surface-border text-xs font-semibold rounded text-text-main hover:bg-surface-dim hover:border-surface-border hover:text-white disabled:opacity-40 disabled:hover:bg-surface disabled:hover:border-surface-border disabled:hover:text-text-main disabled:cursor-not-allowed transition-all cursor-pointer"
               >
                 Previous
               </button>
@@ -160,8 +160,8 @@ export default function CheaterDB() {
                   onClick={() => setCurrentPage(pageNum)}
                   className={`px-3 py-1.5 text-xs font-semibold rounded transition-all cursor-pointer ${
                     currentPage === pageNum
-                      ? "bg-[#9fcaff] text-[#003259] shadow-lg shadow-[#9fcaff]/10 font-bold"
-                      : "bg-[#0b121d] border border-[#1e2530] text-[#c9d4e0] hover:bg-[#1a2333] hover:border-[#2e3d50] hover:text-white"
+                      ? "bg-primary text-background shadow-lg shadow-primary/10 font-bold"
+                      : "bg-surface border border-surface-border text-text-main hover:bg-surface-dim hover:border-surface-border hover:text-white"
                   }`}
                 >
                   {pageNum}
@@ -172,7 +172,7 @@ export default function CheaterDB() {
               <button
                 onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
                 disabled={currentPage === totalPages}
-                className="px-3 py-1.5 bg-[#0b121d] border border-[#1e2530] text-xs font-semibold rounded text-[#c9d4e0] hover:bg-[#1a2333] hover:border-[#2e3d50] hover:text-white disabled:opacity-40 disabled:hover:bg-[#0b121d] disabled:hover:border-[#1e2530] disabled:hover:text-[#c9d4e0] disabled:cursor-not-allowed transition-all cursor-pointer"
+                className="px-3 py-1.5 bg-surface border border-surface-border text-xs font-semibold rounded text-text-main hover:bg-surface-dim hover:border-surface-border hover:text-white disabled:opacity-40 disabled:hover:bg-surface disabled:hover:border-surface-border disabled:hover:text-text-main disabled:cursor-not-allowed transition-all cursor-pointer"
               >
                 Next
               </button>
@@ -182,57 +182,57 @@ export default function CheaterDB() {
 
         {/* Details Modal */}
         {selectedReport && (
-          <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4 sm:p-6 backdrop-blur-sm">
-            <div className="bg-[#0b121d] border border-[#1e2530] rounded-xl w-full max-w-2xl overflow-hidden shadow-2xl">
-              <div className="px-6 py-4 border-b border-[#1e2530] flex justify-between items-center bg-[#0d131f]">
-                <h2 className="text-lg font-bold text-white">Record Verification</h2>
-                <button onClick={() => setSelectedReport(null)} className="text-[#55667a] hover:text-white text-xl">×</button>
+          <div className="fixed inset-0 bg-black/85 flex items-center justify-center z-50 p-4 sm:p-6 backdrop-blur-sm">
+            <div className="bg-surface border border-surface-border rounded-xl w-full max-w-2xl overflow-hidden shadow-2xl transition-colors duration-300">
+              <div className="px-6 py-4 border-b border-surface-border flex justify-between items-center bg-surface-dim">
+                <h2 className="text-lg font-bold text-text-main">Record Verification</h2>
+                <button onClick={() => setSelectedReport(null)} className="text-text-label hover:text-text-main text-xl">×</button>
               </div>
               <div className="p-6 sm:p-8 max-h-[85vh] overflow-y-auto">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8 mb-8">
                   <div>
-                    <p className="text-[10px] uppercase tracking-widest text-[#55667a] font-bold mb-1">Suspect</p>
-                    <p className="text-[#a5c9ff] font-mono text-lg">{selectedReport.suspectHandle}</p>
+                    <p className="text-[10px] uppercase tracking-widest text-text-label font-bold mb-1">Suspect</p>
+                    <p className="text-primary font-mono text-lg">{selectedReport.suspectHandle}</p>
                   </div>
                   <div>
-                    <p className="text-[10px] uppercase tracking-widest text-[#55667a] font-bold mb-1">Context</p>
-                    <p className="text-white">{selectedReport.contestId} / {selectedReport.problemId}</p>
+                    <p className="text-[10px] uppercase tracking-widest text-text-label font-bold mb-1">Context</p>
+                    <p className="text-text-main">{selectedReport.contestId} / {selectedReport.problemId}</p>
                   </div>
                 </div>
                 <div className="mb-8">
-                  <p className="text-[10px] uppercase tracking-widest text-[#55667a] font-bold mb-2">Evidence & Rationale</p>
-                  <div className="bg-[#050a11] border border-[#1e2530] p-4 rounded text-sm text-[#8a9ab0] leading-relaxed whitespace-pre-wrap font-sans">
+                  <p className="text-[10px] uppercase tracking-widest text-text-label font-bold mb-2">Evidence & Rationale</p>
+                  <div className="bg-background border border-surface-border p-4 rounded text-sm text-text-muted leading-relaxed whitespace-pre-wrap font-sans transition-colors duration-300">
                     {selectedReport.description}
                   </div>
                 </div>
                 {selectedReport.moderatorComment && (
                   <div className="mb-8">
-                    <p className="text-[10px] uppercase tracking-widest text-[#9fcaff] font-bold mb-2">Moderator Decision & Rationale</p>
-                    <div className="bg-[#0e1622] border border-[#2e3d50] p-4 rounded text-sm text-[#dde2f3] leading-relaxed whitespace-pre-wrap font-sans">
+                    <p className="text-[10px] uppercase tracking-widest text-primary font-bold mb-2">Moderator Decision & Rationale</p>
+                    <div className="bg-surface-dim border border-surface-border p-4 rounded text-sm text-text-main leading-relaxed whitespace-pre-wrap font-sans transition-colors duration-300">
                       {selectedReport.moderatorComment}
                     </div>
                   </div>
                 )}
                 {selectedReport.evidenceImage && (
                   <div className="mb-8">
-                    <p className="text-[10px] uppercase tracking-widest text-[#55667a] font-bold mb-2">Attachment</p>
+                    <p className="text-[10px] uppercase tracking-widest text-text-label font-bold mb-2">Attachment</p>
                     <img 
                       src={selectedReport.evidenceImage.startsWith('http')
                         ? selectedReport.evidenceImage
                         : `${import.meta.env.VITE_API_URL?.replace('/api', '') || 'http://localhost:3000'}${selectedReport.evidenceImage}`}
                       alt="Evidence" 
-                      className="w-full rounded border border-[#334155] shadow-inner"
+                      className="w-full rounded border border-surface-border shadow-inner"
                     />
                   </div>
                 )}
-                <div className="mt-8 pt-6 border-t border-[#1e2530] flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
+                <div className="mt-8 pt-6 border-t border-surface-border flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
                   <div>
-                    <p className="text-[10px] uppercase tracking-widest text-[#55667a] font-bold">Report ID</p>
-                    <p className="text-xs font-mono text-[#55667a]">{selectedReport.reportId}</p>
+                    <p className="text-[10px] uppercase tracking-widest text-text-label font-bold">Report ID</p>
+                    <p className="text-xs font-mono text-text-label">{selectedReport.reportId}</p>
                   </div>
                   <button 
                     onClick={() => setSelectedReport(null)}
-                    className="w-full sm:w-auto px-6 py-2 bg-[#1e293b] text-white text-sm rounded hover:bg-[#2d3a4f] transition-colors"
+                    className="w-full sm:w-auto px-6 py-2 bg-surface-dim border border-surface-border text-text-main text-sm rounded hover:bg-surface hover:text-white transition-all cursor-pointer"
                   >
                     Close Record
                   </button>

@@ -55,6 +55,8 @@ const router = createBrowserRouter([
 
 
 function Preloader() {
+  const isLight = typeof window !== 'undefined' && localStorage.getItem('theme') === 'light';
+
   return (
     <div style={{
       position: 'fixed',
@@ -62,19 +64,20 @@ function Preloader() {
       left: 0,
       width: '100vw',
       height: '100vh',
-      backgroundColor: '#050a11',
+      backgroundColor: isLight ? '#f8fafc' : '#050a11',
       display: 'flex',
       flexDirection: 'column',
       justifyContent: 'center',
       alignItems: 'center',
       zIndex: 9999,
+      transition: 'background-color 0.3s ease',
     }}>
       <div style={{ position: 'relative', width: '100px', height: '100px', marginBottom: '24px' }}>
         {/* The Rolling Circle */}
         <div style={{
           position: 'absolute',
           inset: 0,
-          border: "4px solid rgba(59, 130, 246, 0.1)",
+          border: isLight ? "4px solid rgba(59, 130, 246, 0.05)" : "4px solid rgba(59, 130, 246, 0.1)",
           borderTop: "4px solid #3b82f6",
           borderRadius: "50%",
           animation: "spin 1s linear infinite",
@@ -94,7 +97,7 @@ function Preloader() {
           }} 
         />
       </div>
-      <h1 style={{ color: '#a5c9ff', fontSize: '18px', fontWeight: 700, letterSpacing: '1px', textTransform: 'uppercase' }}>
+      <h1 style={{ color: isLight ? '#2563eb' : '#a5c9ff', fontSize: '18px', fontWeight: 700, letterSpacing: '1px', textTransform: 'uppercase' }}>
         Initializing
       </h1>
       <style>{`
@@ -112,6 +115,16 @@ function App() {
     // Check if we already showed the loader in this session
     return !sessionStorage.getItem('cw_loaded');
   });
+
+  // Initialize light/dark theme
+  useEffect(() => {
+    const savedTheme = localStorage.getItem('theme') || 'dark';
+    if (savedTheme === 'light') {
+      document.documentElement.classList.add('light');
+    } else {
+      document.documentElement.classList.remove('light');
+    }
+  }, []);
 
   useEffect(() => {
     if (!loading) return;

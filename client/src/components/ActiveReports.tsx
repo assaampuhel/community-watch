@@ -115,44 +115,45 @@ export default function ActiveReports() {
       <div style={{
         minHeight: "100vh",
         width: "100%",
-        backgroundColor: "#050a11",
-        color: "#c9d4e0",
+        backgroundColor: "var(--bg-main)",
+        color: "var(--text-main)",
         fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, sans-serif",
         display: "flex",
         flexDirection: "column",
+        transition: "background-color 0.3s ease, color 0.3s ease",
       }}>
         {/* Main Content */}
         <main style={{ padding: "40px 24px 0px 24px", maxWidth: "1200px", margin: "0 auto", width: "100%" }}>
           
           {/* Page Header */}
           <div style={{ marginBottom: "32px" }}>
-            <h1 className="text-2xl sm:text-3xl font-bold text-white mb-2">Active Reports</h1>
-            <p style={{ color: "#8a9ab0", fontSize: "14px", lineHeight: "1.6", margin: 0, maxWidth: "700px" }}>
+            <h1 className="text-2xl sm:text-3xl font-bold text-text-main mb-2">Active Reports</h1>
+            <p style={{ color: "var(--text-muted)", fontSize: "14px", lineHeight: "1.6", margin: 0, maxWidth: "700px" }}>
               Help moderate and maintain community integrity by peer-reviewing pending contest violation reports.
             </p>
           </div>
 
           {/* Identity Verification Alert */}
           {!isLoggedIn && (
-            <div className="bg-[#0b121d] border border-[#1e2530] rounded-lg p-6 sm:p-8 mb-10 flex flex-col sm:flex-row gap-6 items-start">
+            <div className="bg-surface border border-surface-border rounded-lg p-6 sm:p-8 mb-10 flex flex-col sm:flex-row gap-6 items-start transition-colors duration-300">
               <div className="flex-shrink-0 mx-auto sm:mx-0">
                 <div style={{ padding: "10px", backgroundColor: "rgba(217, 119, 6, 0.1)", borderRadius: "8px" }}>
                   <AlertShield />
                 </div>
               </div>
               <div className="flex-1 text-center sm:text-left w-full">
-                <h2 className="text-lg sm:text-xl font-semibold text-white mb-2">Identity Verification Required</h2>
-                <p className="text-[#8a9ab0] text-sm leading-relaxed mb-6 max-w-3xl">
+                <h2 className="text-lg sm:text-xl font-semibold text-text-main mb-2">Identity Verification Required</h2>
+                <p className="text-text-muted text-sm leading-relaxed mb-6 max-w-3xl">
                   To access sensitive evidence, you must verify your Codeforces identity. Sign in with your 1500+ rated account to participate in moderation.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto justify-center sm:justify-start">
                   <NavLink to="/auth?mode=signin" className="w-full sm:w-auto">
-                    <button className="w-full sm:w-auto px-6 py-2.5 bg-transparent border border-[#334155] rounded text-sm text-[#c9d4e0] hover:text-white hover:bg-[#334155]/20 transition-all font-medium cursor-pointer">
+                    <button className="w-full sm:w-auto px-6 py-2.5 bg-transparent border border-surface-border rounded text-sm text-text-main hover:bg-surface-dim transition-all font-medium cursor-pointer">
                       Sign In
                     </button>
                   </NavLink>
                   <NavLink to="/auth?mode=signup" className="w-full sm:w-auto">
-                    <button className="w-full sm:w-auto px-6 py-2.5 bg-[#1e293b] border border-[#334155] rounded text-sm text-white hover:bg-[#334155] transition-all font-medium cursor-pointer">
+                    <button className="w-full sm:w-auto px-6 py-2.5 bg-surface-dim border border-surface-border rounded text-sm text-text-main hover:bg-surface transition-all font-medium cursor-pointer">
                       Sign Up
                     </button>
                   </NavLink>
@@ -178,53 +179,55 @@ export default function ActiveReports() {
 
           {/* Pending Review Table */}
           <div className="cf-table-container" style={{
-            backgroundColor: "#0b121d",
-            border: "1px solid #1e2530",
+            backgroundColor: "var(--bg-card)",
+            border: "1px solid var(--border-main)",
             borderRadius: "8px",
-            overflow: "hidden"
+            overflow: "hidden",
+            transition: "all 0.3s ease",
           }}>
-            <div style={{ padding: "16px 24px", borderBottom: "1px solid #1e2530" }}>
-              <h3 style={{ fontSize: "12px", fontWeight: "bold", color: "#55667a", textTransform: "uppercase", letterSpacing: "1px" }}>
+            <div style={{ padding: "16px 24px", borderBottom: "1px solid var(--border-main)" }}>
+              <h3 style={{ fontSize: "12px", fontWeight: "bold", color: "var(--text-label)", textTransform: "uppercase", letterSpacing: "1px" }}>
                 Pending Review ({reports.length})
               </h3>
             </div>
 
             {loading ? (
-              <div style={{ padding: "48px 24px", textAlign: "center", color: "#55667a" }}>
+              <div style={{ padding: "48px 24px", textAlign: "center", color: "var(--text-label)" }}>
                 Loading reports...
               </div>
             ) : reports.length === 0 ? (
-              <div style={{ padding: "48px 24px", textAlign: "center", color: "#55667a" }}>
+              <div style={{ padding: "48px 24px", textAlign: "center", color: "var(--text-label)" }}>
                 No pending reports. All caught up! 🎉
               </div>
             ) : (
               <table className="cf-table" style={{ width: "100%", borderCollapse: "collapse", textAlign: "left" }}>
                 <thead>
-                  <tr style={{ borderBottom: "1px solid #1e2530" }}>
-                    <th style={{ padding: "16px 24px", fontSize: "12px", color: "#55667a", textTransform: "uppercase" }}>Suspect Handle</th>
-                    <th style={{ padding: "16px 24px", fontSize: "12px", color: "#55667a", textTransform: "uppercase" }}>Contest ID</th>
-                    <th style={{ padding: "16px 24px", fontSize: "12px", color: "#55667a", textTransform: "uppercase" }}>Problem</th>
-                    <th style={{ padding: "16px 24px", fontSize: "12px", color: "#55667a", textTransform: "uppercase", textAlign: "right" }}>Action</th>
+                  <tr style={{ borderBottom: "1px solid var(--border-main)" }}>
+                    <th style={{ padding: "16px 24px", fontSize: "12px", color: "var(--text-label)", textTransform: "uppercase" }}>Suspect Handle</th>
+                    <th style={{ padding: "16px 24px", fontSize: "12px", color: "var(--text-label)", textTransform: "uppercase" }}>Contest ID</th>
+                    <th style={{ padding: "16px 24px", fontSize: "12px", color: "var(--text-label)", textTransform: "uppercase" }}>Problem</th>
+                    <th style={{ padding: "16px 24px", fontSize: "12px", color: "var(--text-label)", textTransform: "uppercase", textAlign: "right" }}>Action</th>
                   </tr>
                 </thead>
                 <tbody>
                   {reports.map((report, i) => (
-                    <tr key={report.reportId} style={{ borderBottom: i === reports.length - 1 ? "none" : "1px solid #1e2530" }}>
-                      <td style={{ padding: "16px 24px", color: "#a5c9ff", fontSize: "14px", fontWeight: 500 }}>{report.suspectHandle}</td>
-                      <td style={{ padding: "16px 24px", color: "#fff", fontSize: "14px", fontWeight: 600 }}>{report.contestId}</td>
-                      <td style={{ padding: "16px 24px", color: "#8a9ab0", fontSize: "14px" }}>{report.problemId}</td>
+                    <tr key={report.reportId} style={{ borderBottom: i === reports.length - 1 ? "none" : "1px solid var(--border-main)" }}>
+                      <td style={{ padding: "16px 24px", color: "var(--primary-light)", fontSize: "14px", fontWeight: 500 }}>{report.suspectHandle}</td>
+                      <td style={{ padding: "16px 24px", color: "var(--text-main)", fontSize: "14px", fontWeight: 600 }}>{report.contestId}</td>
+                      <td style={{ padding: "16px 24px", color: "var(--text-muted)", fontSize: "14px" }}>{report.problemId}</td>
                       <td style={{ padding: "16px 24px", textAlign: "right" }}>
                         <div style={{ display: "flex", gap: "8px", justifyContent: "flex-end" }}>
                           <button
                             onClick={() => setSelectedReport(report)}
                             style={{
-                              padding: "4px 12px",
-                              backgroundColor: "#1e293b",
-                              border: "none",
+                              padding: "6px 16px",
+                              backgroundColor: "var(--bg-input)",
+                              border: "1px solid var(--border-input)",
                               borderRadius: "4px",
-                              color: "#fff",
+                              color: "var(--text-main)",
                               fontSize: "12px",
-                              cursor: "pointer"
+                              cursor: "pointer",
+                              transition: "all 0.3s ease",
                             }}
                           >
                             View
@@ -251,47 +254,49 @@ export default function ActiveReports() {
               padding: "20px"
             }}>
               <div style={{
-                backgroundColor: "#0b121d",
-                border: "1px solid #1e2530",
+                backgroundColor: "var(--bg-card)",
+                border: "1px solid var(--border-main)",
                 borderRadius: "12px",
                 width: "100%",
                 maxWidth: "700px",
                 maxHeight: "90vh",
                 overflow: "auto",
-                boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.5)"
+                boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.5)",
+                transition: "all 0.3s ease",
               }}>
-                <div style={{ padding: "24px", borderBottom: "1px solid #1e2530", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                  <h2 style={{ fontSize: "18px", fontWeight: 600, color: "#fff" }}>Report Details</h2>
-                  <button onClick={() => { setSelectedReport(null); setComment(''); }} style={{ background: "none", border: "none", color: "#55667a", cursor: "pointer", fontSize: "20px" }}>×</button>
+                <div style={{ padding: "24px", borderBottom: "1px solid var(--border-main)", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                  <h2 style={{ fontSize: "18px", fontWeight: 600, color: "var(--text-main)" }}>Report Details</h2>
+                  <button onClick={() => { setSelectedReport(null); setComment(''); }} style={{ background: "none", border: "none", color: "var(--text-label)", cursor: "pointer", fontSize: "20px" }}>×</button>
                 </div>
                 
                 <div style={{ padding: "24px" }}>
                   <div className="cf-modal-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "24px", marginBottom: "24px" }}>
                     <div>
-                      <div style={{ fontSize: "11px", color: "#55667a", textTransform: "uppercase", marginBottom: "4px" }}>Suspect Handle</div>
-                      <div style={{ color: "#a5c9ff", fontWeight: 600 }}>{selectedReport.suspectHandle}</div>
+                      <div style={{ fontSize: "11px", color: "var(--text-label)", textTransform: "uppercase", marginBottom: "4px" }}>Suspect Handle</div>
+                      <div style={{ color: "var(--primary-light)", fontWeight: 600 }}>{selectedReport.suspectHandle}</div>
                     </div>
                     <div>
-                      <div style={{ fontSize: "11px", color: "#55667a", textTransform: "uppercase", marginBottom: "4px" }}>Contest / Problem</div>
-                      <div style={{ color: "#fff" }}>{selectedReport.contestId} / {selectedReport.problemId}</div>
+                      <div style={{ fontSize: "11px", color: "var(--text-label)", textTransform: "uppercase", marginBottom: "4px" }}>Contest / Problem</div>
+                      <div style={{ color: "var(--text-main)" }}>{selectedReport.contestId} / {selectedReport.problemId}</div>
                     </div>
                     <div>
-                      <div style={{ fontSize: "11px", color: "#55667a", textTransform: "uppercase", marginBottom: "4px" }}>Reason</div>
+                      <div style={{ fontSize: "11px", color: "var(--text-label)", textTransform: "uppercase", marginBottom: "4px" }}>Reason</div>
                       <div style={{ color: "#ffb86e" }}>{selectedReport.reason}</div>
                     </div>
                   </div>
 
                   <div style={{ marginBottom: "24px" }}>
-                    <div style={{ fontSize: "11px", color: "#55667a", textTransform: "uppercase", marginBottom: "8px" }}>Evidence Description</div>
+                    <div style={{ fontSize: "11px", color: "var(--text-label)", textTransform: "uppercase", marginBottom: "8px" }}>Evidence Description</div>
                     <div style={{ 
-                      backgroundColor: "#050a11", 
-                      border: "1px solid #1e2530", 
+                      backgroundColor: "var(--bg-main)", 
+                      border: "1px solid var(--border-main)", 
                       borderRadius: "6px", 
                       padding: "16px", 
                       fontSize: "14px", 
                       lineHeight: "1.6",
-                      color: "#c9d4e0",
-                      whiteSpace: "pre-wrap"
+                      color: "var(--text-main)",
+                      whiteSpace: "pre-wrap",
+                      transition: "all 0.3s ease",
                     }}>
                       {selectedReport.description}
                     </div>
@@ -299,21 +304,21 @@ export default function ActiveReports() {
 
                   {selectedReport.evidenceImage && (
                     <div style={{ marginBottom: "24px" }}>
-                      <div style={{ fontSize: "11px", color: "#55667a", textTransform: "uppercase", marginBottom: "8px" }}>Visual Evidence</div>
+                      <div style={{ fontSize: "11px", color: "var(--text-label)", textTransform: "uppercase", marginBottom: "8px" }}>Visual Evidence</div>
                       <img 
                         src={selectedReport.evidenceImage.startsWith('http') 
                           ? selectedReport.evidenceImage 
                           : `${import.meta.env.VITE_API_URL?.replace('/api', '') || 'http://localhost:3000'}${selectedReport.evidenceImage}`} 
                         alt="Evidence" 
-                        style={{ width: "100%", borderRadius: "6px", border: "1px solid #334155" }}
+                        style={{ width: "100%", borderRadius: "6px", border: "1px solid var(--border-main)" }}
                       />
                     </div>
                   )}
 
                   {isModerator ? (
-                    <div style={{ marginTop: "32px", paddingTop: "24px", borderTop: "1px solid #1e2530" }}>
+                    <div style={{ marginTop: "32px", paddingTop: "24px", borderTop: "1px solid var(--border-main)" }}>
                       <div style={{ marginBottom: "20px" }}>
-                        <div style={{ fontSize: "11px", color: "#55667a", textTransform: "uppercase", marginBottom: "8px", display: "flex", justifyContent: "space-between" }}>
+                        <div style={{ fontSize: "11px", color: "var(--text-label)", textTransform: "uppercase", marginBottom: "8px", display: "flex", justifyContent: "space-between" }}>
                           <span>Moderator Verification Rationale <span style={{ color: "#ef4444" }}>*</span></span>
                         </div>
                         <textarea
@@ -323,14 +328,15 @@ export default function ActiveReports() {
                           rows={3}
                           style={{
                             width: "100%",
-                            backgroundColor: "#050a11",
-                            border: "1px solid #1e2530",
+                            backgroundColor: "var(--bg-main)",
+                            border: "1px solid var(--border-main)",
                             borderRadius: "8px",
                             padding: "12px",
                             fontSize: "14px",
-                            color: "#c9d4e0",
+                            color: "var(--text-main)",
                             outline: "none",
-                            resize: "none"
+                            resize: "none",
+                            transition: "all 0.3s ease",
                           }}
                         />
                       </div>
@@ -374,7 +380,7 @@ export default function ActiveReports() {
                     </div>
                   ) : (
                     <div style={{ marginTop: "24px", padding: "16px", backgroundColor: "rgba(59, 130, 246, 0.05)", borderRadius: "6px", border: "1px solid rgba(59, 130, 246, 0.2)" }}>
-                      <p style={{ fontSize: "12px", color: "#8a9ab0", textAlign: "center", margin: 0 }}>
+                      <p style={{ fontSize: "12px", color: "var(--text-muted)", textAlign: "center", margin: 0 }}>
                         {isLoggedIn 
                           ? "Your account rating is below 1500. Only verified moderators can vote on reports." 
                           : "Please sign in with a 1500+ rated account to participate in moderation."}

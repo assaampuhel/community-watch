@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import Footer from "./Footer";
+import { useAuth } from "../context/AuthContext";
 
 const responsiveStyles = `
   @media (max-width: 640px) {
@@ -31,9 +32,9 @@ const responsiveStyles = `
   }
   .cf-nav-btns-row a:hover {
     transform: translateY(-1px) !important;
-    background: #1f2a3a !important;
-    border-color: #3a4a60 !important;
-    color: #ffffff !important;
+    background: var(--bg-input) !important;
+    border-color: var(--border-input) !important;
+    color: var(--text-main) !important;
     box-shadow: 0 4px 10px rgba(159, 202, 255, 0.09) !important;
   }
   .cf-nav-btns-row a:active {
@@ -50,7 +51,7 @@ const responsiveStyles = `
   .cf-review-section button:hover {
     transform: translateY(-1px) !important;
     filter: brightness(1.09) !important;
-    border-color: #3a82f6 !important;
+    border-color: var(--primary-light) !important;
     box-shadow: 0 4px 10px rgba(59, 130, 246, 0.12) !important;
   }
 
@@ -123,22 +124,23 @@ function StatCard({ icon, target, suffix, label }: { icon: any, target: number, 
       alignItems: "center",
       gap: "16px",
       padding: "24px 20px",
-      background: "#0b121d",
-      border: "1px solid #1e2530",
+      background: "var(--bg-card)",
+      border: "1px solid var(--border-main)",
       borderRadius: "12px",
       boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1)",
       minHeight: "100px",
       boxSizing: "border-box",
-      height: "100%"
+      height: "100%",
+      transition: "all 0.3s ease",
     }}>
       <div style={{
         width: "48px", height: "48px",
-        background: "rgba(165, 201, 255, 0.05)",
+        background: "rgba(59, 130, 246, 0.07)",
         borderRadius: "12px",
         display: "flex", alignItems: "center", justifyContent: "center",
         flexShrink: 0,
-        border: "1px solid rgba(165, 201, 255, 0.1)",
-        color: "#a5c9ff"
+        border: "1px solid var(--border-main)",
+        color: "var(--primary-light)"
       }}>
         {icon}
       </div>
@@ -149,10 +151,10 @@ function StatCard({ icon, target, suffix, label }: { icon: any, target: number, 
         flex: 1,
         minWidth: 0
       }}>
-        <div style={{ fontSize: "24px", fontWeight: 800, color: "#fff", lineHeight: "1.1", letterSpacing: "-0.01em" }}>
+        <div style={{ fontSize: "24px", fontWeight: 800, color: "var(--text-main)", lineHeight: "1.1", letterSpacing: "-0.01em" }}>
           {count.toLocaleString()}{suffix}
         </div>
-        <div style={{ fontSize: "13px", color: "#6b7a8d", marginTop: "6px", fontWeight: 500, lineHeight: "1.3" }}>{label}</div>
+        <div style={{ fontSize: "13px", color: "var(--text-muted)", marginTop: "6px", fontWeight: 500, lineHeight: "1.3" }}>{label}</div>
       </div>
     </div>
   );
@@ -182,6 +184,7 @@ const BanIcon = () => (
 );
 
 function HomePage() {
+  const { isLoggedIn } = useAuth();
   const [search, setSearch] = useState("");
   const navigate = useNavigate();
 
@@ -197,11 +200,12 @@ function HomePage() {
     <div style={{
       minHeight: "100vh",
       width: "100%",
-      backgroundColor: "#050a11",
-      color: "#c9d4e0",
+      backgroundColor: "var(--bg-main)",
+      color: "var(--text-main)",
       fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, sans-serif",
       display: "flex",
       flexDirection: "column",
+      transition: "background-color 0.3s ease, color 0.3s ease",
     }}>
       
       {/* Hero */}
@@ -230,14 +234,14 @@ function HomePage() {
           <h1 className="cf-h1" style={{
             fontSize: "36px",
             fontWeight: 700,
-            color: "#dce8f0",
+            color: "var(--text-main)",
             margin: "0 0 14px",
             letterSpacing: "-0.5px",
           }}>CF Community Watch</h1>
 
           <p style={{
             fontSize: "15px",
-            color: "#6b7a8d",
+            color: "var(--text-muted)",
             margin: "0 0 36px",
           }}>Ensuring fairness in every contest through community-driven integrity.</p>
 
@@ -257,7 +261,6 @@ function HomePage() {
               <SearchIcon />
             </span>
             <input
-              
               type="text"
               placeholder="Search handles"
               value={search}
@@ -266,13 +269,14 @@ function HomePage() {
               style={{
                 width: "100%",
                 padding: "11px 16px 11px 40px",
-                background: "#151b25",
-                border: "1px solid #1e2a38",
+                background: "var(--bg-input)",
+                border: "1px solid var(--border-input)",
                 borderRadius: "8px",
-                color: "#c9d4e0",
+                color: "var(--text-main)",
                 fontSize: "14px",
                 outline: "none",
                 boxSizing: "border-box",
+                transition: "all 0.3s ease",
               }}
             />
           </div>
@@ -291,16 +295,16 @@ function HomePage() {
                   alignItems: "center",
                   gap: "8px",
                   padding: "10px 20px",
-                  background: isActive ? "#1f2a3a" : "#141b26",
-                  border: isActive ? "1px solid #3a4a60" : "1px solid #1e2a38",
+                  background: isActive ? "var(--bg-input)" : "var(--bg-card)",
+                  border: isActive ? "1px solid var(--border-input)" : "1px solid var(--border-main)",
                   borderRadius: "8px",
-                  color: isActive ? "#ffffff" : "#9dafc0",
+                  color: isActive ? "var(--text-main)" : "var(--text-muted)",
                   fontSize: "14px",
                   fontWeight: 500,
                   cursor: "pointer",
                   whiteSpace: "nowrap",
                   textDecoration: "none",
-                  transition: "all 0.2s ease",
+                  transition: "all 0.3s ease",
                 })}
               >
                 {icon}
@@ -315,13 +319,14 @@ function HomePage() {
               <button style={{
                 display: "flex", alignItems: "center", gap: "7px",
                 padding: "10px 24px",
-                background: "#1a3a5c",
-                border: "1px solid #2a5580",
+                background: "rgba(59, 130, 246, 0.08)",
+                border: "1px solid var(--border-input)",
                 borderRadius: "8px",
-                color: "#93b4d4",
+                color: "var(--primary-light)",
                 fontSize: "14px",
                 fontWeight: 500,
                 cursor: "pointer",
+                transition: "all 0.3s ease",
               }}>
                 <PlusIcon /> New Report
               </button>
@@ -350,64 +355,69 @@ function HomePage() {
         </section>
 
         {/* Join Review Board */}
-        <section className="cf-review-section" style={{
-          margin: "0 40px 60px",
-          background: "#111620",
-          border: "1px solid #1b2333",
-          borderRadius: "12px",
-          padding: "56px 24px",
-          textAlign: "center",
-          maxWidth: "1000px",
-          marginLeft: "auto",
-          marginRight: "auto",
-        }}>
-          <div style={{ marginBottom: "20px", display: "flex", justifyContent: "center" }}>
-            <div style={{ width: "50px", height: "50px", borderRadius: "10px", overflow: "hidden" }}>
-              <img src="/logo.png" alt="CF Community Watch" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
-            </div>
-          </div>
-          <h2 style={{
-            fontSize: "28px",
-            fontWeight: 600,
-            color: "#d0dce8",
-            margin: "0 0 16px",
-          }}>Join the Review Board</h2>
-          <p style={{
-            fontSize: "14px",
-            color: "#6b7a8d",
-            maxWidth: "480px",
-            margin: "0 auto 32px",
-            lineHeight: "1.65",
+        {!isLoggedIn && (
+          <section className="cf-review-section" style={{
+            margin: "0 40px 60px",
+            background: "var(--bg-card)",
+            border: "1px solid var(--border-main)",
+            borderRadius: "12px",
+            padding: "56px 24px",
+            textAlign: "center",
+            maxWidth: "1000px",
+            marginLeft: "auto",
+            marginRight: "auto",
+            transition: "all 0.3s ease",
           }}>
-            We rely on experienced community members to maintain integrity. If you have a rating of 1500+ and want to help keep contests fair, apply to become a reviewer.
-          </p>
-          <div style={{ display: "flex", gap: "12px", justifyContent: "center" }}>
-            <NavLink to="/auth?mode=signin">
-            <button style={{
-              padding: "10px 28px",
-              background: "#141b26",
-              border: "1px solid #1e2a38",
-              borderRadius: "8px",
-              color: "#8a9ab0",
+            <div style={{ marginBottom: "20px", display: "flex", justifyContent: "center" }}>
+              <div style={{ width: "50px", height: "50px", borderRadius: "10px", overflow: "hidden" }}>
+                <img src="/logo.png" alt="CF Community Watch" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+              </div>
+            </div>
+            <h2 style={{
+              fontSize: "28px",
+              fontWeight: 600,
+              color: "var(--text-main)",
+              margin: "0 0 16px",
+            }}>Join the Review Board</h2>
+            <p style={{
               fontSize: "14px",
-              fontWeight: 500,
-              cursor: "pointer",
-            }}>Sign In</button>
-            </NavLink>
-            <NavLink to="/auth?mode=signup">
-            <button style={{
-              padding: "10px 28px",
-              background: "#1a3a5c",
-              border: "1px solid #2a5580",
-              borderRadius: "8px",
-              color: "#93b4d4",
-              fontSize: "14px",
-              fontWeight: 500,
-              cursor: "pointer",
-            }}>Apply Now</button>
-            </NavLink>
-          </div>
-        </section>
+              color: "var(--text-muted)",
+              maxWidth: "480px",
+              margin: "0 auto 32px",
+              lineHeight: "1.65",
+            }}>
+              We rely on experienced community members to maintain integrity. If you have a rating of 1500+ and want to help keep contests fair, apply to become a reviewer.
+            </p>
+            <div style={{ display: "flex", gap: "12px", justifyContent: "center" }}>
+              <NavLink to="/auth?mode=signin">
+              <button style={{
+                padding: "10px 28px",
+                background: "var(--bg-input)",
+                border: "1px solid var(--border-input)",
+                borderRadius: "8px",
+                color: "var(--text-muted)",
+                fontSize: "14px",
+                fontWeight: 500,
+                cursor: "pointer",
+                transition: "all 0.3s ease",
+              }}>Sign In</button>
+              </NavLink>
+              <NavLink to="/auth?mode=signup">
+              <button style={{
+                padding: "10px 28px",
+                background: "rgba(59, 130, 246, 0.08)",
+                border: "1px solid var(--border-input)",
+                borderRadius: "8px",
+                color: "var(--primary-light)",
+                fontSize: "14px",
+                fontWeight: 500,
+                cursor: "pointer",
+                transition: "all 0.3s ease",
+              }}>Apply Now</button>
+              </NavLink>
+            </div>
+          </section>
+        )}
       </main>
 
       <Footer />
