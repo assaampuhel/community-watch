@@ -136,7 +136,7 @@ export const signupChallenge = async (req, res) => {
     for (let i = 0; i < 6; i++) {
       tokenSuffix += chars.charAt(Math.floor(Math.random() * chars.length));
     }
-    const token = `CW-${tokenSuffix}`;
+    const token = `CW-VRFY-${tokenSuffix}`;
 
     // 4. Hash password securely
     const salt = await bcrypt.genSalt(10);

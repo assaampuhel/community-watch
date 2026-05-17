@@ -173,7 +173,7 @@ export default function Authform() {
               disabled={loading}
               className="w-full bg-[#3b82f6] hover:bg-blue-400 disabled:opacity-50 text-white py-3 rounded mt-2 font-medium text-sm transition-colors flex justify-center items-center gap-2 shadow-lg shadow-blue-500/20 cursor-pointer"
             >
-              {loading ? 'Processing...' : (activeTab === 'signin' ? 'Authenticate' : 'Claim Handle & Verify')}
+              {loading ? 'Processing...' : (activeTab === 'signin' ? 'Authenticate' : 'Verify Handle & Signup')}
               {!loading && (
                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d={activeTab === 'signin' ? "M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" : "M14 5l7 7m0 0l-7 7m7-7H3"} />
@@ -199,7 +199,7 @@ export default function Authform() {
             </h3>
             
             <p className="text-xs text-[#8a9ab0] mb-5 leading-relaxed font-sans">
-              To verify that the Codeforces account <strong className="text-[#a5c9ff] font-mono">@{handle}</strong> belongs to you, follow these brief instructions:
+              To verify that the Codeforces account <strong className="text-[#a5c9ff] font-mono">{handle}</strong> belongs to you, follow these brief instructions:
             </p>
 
             <div className="space-y-4 text-xs leading-relaxed mb-6 font-sans">
@@ -256,7 +256,7 @@ export default function Authform() {
                 <div className="flex-1">
                   <p className="text-[#dde2f3] font-semibold">Save Changes & Verify</p>
                   <p className="text-[#8a9ab0] mt-1">
-                    Save your Codeforces profile changes so they become public, then return here and click the verification button below!
+                    Save your Codeforces profile changes so they become public, then return here and click the verification button below! <strong className="text-[#a5c9ff] font-mono">(It might take a few seconds to register the changes)</strong>
                   </p>
                   <p className="text-[10px] text-orange-400 font-mono mt-1 leading-normal">
                     ⚠️ Note: You can safely remove this token from your Codeforces profile once the verification succeeds!
@@ -279,11 +279,6 @@ export default function Authform() {
                 className="w-full bg-emerald-600 hover:bg-emerald-500 disabled:opacity-50 text-white py-3 rounded font-bold text-xs uppercase tracking-wider transition-colors flex justify-center items-center gap-2 cursor-pointer shadow-lg shadow-emerald-600/15"
               >
                 {loading ? 'Verifying profile...' : 'Verify Account Ownership'}
-                {!loading && (
-                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 12l2 2 4-4" />
-                  </svg>
-                )}
               </button>
 
               <button 
@@ -366,7 +361,7 @@ export default function Authform() {
               <div className="text-xs text-[#55667a] flex flex-col gap-1 border-t border-[#1e2530]/50 pt-3">
                 <p className="pulse-text">🔐 Cryptographic handshake: SECURE</p>
                 <p className="delay-100">📡 Synapse Link: Synchronized</p>
-                <p className="text-[#a5c9ff] mt-2 animate-pulse">Initializing Sentinel terminal...</p>
+                <p className="text-[#a5c9ff] mt-2 animate-pulse">Customizing your experience...</p>
               </div>
             </div>
           </div>
