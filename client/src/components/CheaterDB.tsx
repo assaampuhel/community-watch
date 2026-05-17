@@ -3,6 +3,13 @@ import { useLocation } from "react-router-dom";
 import { getReports, type ReportData } from "../api";
 import Footer from "./Footer";
 
+const SearchIcon = () => (
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#6b7a8d" strokeWidth="2">
+    <circle cx="11" cy="11" r="8" />
+    <line x1="21" y1="21" x2="16.65" y2="16.65" />
+  </svg>
+);
+
 export default function CheaterDB() {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
@@ -51,7 +58,7 @@ export default function CheaterDB() {
             onChange={(e) => setSearch(e.target.value)}
             className="w-full bg-[#0b121d] border border-[#2e3d50] rounded-lg py-3 px-12 text-sm outline-none focus:border-[#a5c9ff] transition-all"
           />
-          <span className="absolute left-4 top-3.5 text-gray-500">🔍</span>
+          <span className="absolute left-4 top-4"><SearchIcon /></span>
         </div>
       </div>
 

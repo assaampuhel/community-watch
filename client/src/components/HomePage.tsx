@@ -163,7 +163,7 @@ function HomePage() {
     <div style={{
       minHeight: "100vh",
       width: "100%",
-      backgroundColor: "#0f1117",
+      backgroundColor: "#050a11",
       color: "#c9d4e0",
       fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, sans-serif",
       display: "flex",
