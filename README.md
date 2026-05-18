@@ -70,38 +70,6 @@ Community Watch is a transparent, peer-driven integrity platform designed to ens
 
 To prevent users from signing up under handles that do not belong to them, CF Community Watch implements an interactive **two-step cryptographic handle verification**:
 
-```mermaid
-sequenceDiagram
-    autonumber
-    actor User as Competitor
-    participant App as Community Watch App
-    participant DB as MongoDB
-    participant CF as Codeforces API
-
-    User->>App: Submits Handle, Email & Password (Step 1)
-    App->>CF: Query user info for handle
-    CF-->>App: Returns user rating & details
-    App->>App: Generates Alphanumeric Challenge Token<br/>(e.g., CW-VRFY-AB12CD)
-    App->>DB: Stores temporary VerificationChallenge (expires 15m)
-    App-->>User: Returns challenge token & instructions
-
-    Note over User,CF: User goes to Codeforces profile settings
-    User->>CF: Pastes challenge token into 'Organization' field & saves
-
-    User->>App: Clicks "Verify Account Ownership" (Step 2)
-    App->>CF: Fetches public user info for handle
-    CF-->>App: Returns user info (containing current Organization field)
-    
-    alt Organization matches challenge token
-        App->>DB: Moves details to permanent User collection & hashes password
-        App->>DB: Auto-assigns "moderator" role if rating >= 1500
-        App->>DB: Deletes temporary VerificationChallenge
-        App-->>User: Success animation & JWT Token issued
-    else Mismatch or Empty
-        App-->>User: Displays error, asking user to check Codeforces settings
-    end
-```
-
 1. **Step 1: Initiate Challenge**: The user inputs their Codeforces handle, email, and password. The server checks the Codeforces API to confirm the handle exists, generates a secure token prefix `CW-VRFY-[RANDOM_SUFFIX]`, and saves it inside `VerificationChallenge` collection in the database.
 2. **Profile Update**: The user copies this token, visits their [Codeforces Social Settings](https://codeforces.com/settings/social), pastes the token into the **Organization** field, and saves changes.
 3. **Step 2: Validation**: The user clicks verify. The server queries the Codeforces API, fetches their public profile, and extracts the `organization` field. If it matches, registration is completed, role privileges are evaluated (User vs Moderator), and a JWT is issued. The token can then be safely cleared from Codeforces.
