@@ -33,8 +33,7 @@ Community Watch is a transparent, peer-driven integrity platform designed to ens
 6. [📡 API Endpoints Reference](#-api-endpoints-reference)
 7. [🛡️ Moderation Policy](#️-moderation-policy)
 8. [🧪 Testing Suite](#-testing-suite)
-9. [👥 Contributors](#-contributors)
-10. [💖 Made with Love By](#-made-with-love-by)
+9. [💖 Made with Love By](#-made-with-love-by)
 
 ---
 
