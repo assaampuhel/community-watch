@@ -285,17 +285,6 @@ chmod +x test-api.sh
 
 ---
 
-## 👥 Contributors
-
-This platform exists thanks to the dedicated development team behind its design, implementation, and maintenance:
-
-| Contributor | GitHub Profile | Role & Contributions |
-| :--- | :--- | :--- |
-| 🛡️ **Asaph Samuel** | [@assaampuhel](https://github.com/assaampuhel) | **Full-Stack Core Developer**<br/>• Conceived core architecture & structure<br/>• Developed two-step Codeforces Cryptographic identity verification<br/>• Built context providers, app routes, and state managers |
-| 🚀 **Shourya Sharma** | [@shouryasharma22](https://github.com/shouryasharma22) | **Core Backend & UI Developer**<br/>• Built server API controllers, routing & Mongoose database models<br/>• Crafted premium design styling, glassmorphic UI cards & responsiveness<br/>• Implemented evidence uploads & report review engine |
-
----
-
 ## 💖 Made with Love By
 
 We are dedicated to supporting fair play and clean competition within the global coding community! 
